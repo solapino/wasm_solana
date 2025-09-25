@@ -201,6 +201,7 @@ pub fn parse_bpf_upgradeable_loader(
 				}),
 			})
 		}
+		UpgradeableLoaderInstruction::ExtendProgramChecked { additional_bytes } => todo!(),
 	}
 }
 

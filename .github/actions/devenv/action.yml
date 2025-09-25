@@ -26,7 +26,7 @@ runs:
       with:
         path: ${{ inputs.nix-cache }}
         key: ${{ runner.os }}-nix-cache-${{ hashFiles('**/devenv.nix', '**/devenv.yaml', '**/devenv.lock') }}
-        restore-keys: ${{ runner.os }}-nix-cache-
+        restore-keys: ${{ runner.os }}-nix-v0-
 
     - name: install nix
       uses: cachix/install-nix-action@v31
@@ -62,7 +62,7 @@ runs:
       uses: Swatinem/rust-cache@v2
       with:
         prefix-key: "v0-rust"
-        key: ${{ runner.os }}
+        key: ${{ runner.os }}-rust-v0-
 
     - name: cache cargo binaries
       uses: actions/cache@v4
@@ -70,16 +70,16 @@ runs:
         path: ./.bin
         key: ${{ runner.os }}-cargo-bin-${{ env.RUSTUP_TOOLCHAIN }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.toml') }}
         restore-keys: |
-          ${{ runner.os }}-cargo-bin-
+          ${{ runner.os }}-cargo-bin-v0-
 
-    - name: cache local binaries
+    - name: cache eget
       uses: actions/cache@v4
       with:
-        path: ./.local-cache
-        key: ${{ runner.os }}-local-cache-${{ hashFiles('setup/cache-versions.json') }}
+        path: ./.eget/bin
+        key: ${{ runner.os }}-v0-eget-${{ hashFiles('.eget/.eget.toml') }}
         restore-keys: |
-          ${{ runner.os }}-local-cache-
+          ${{ runner.os }}-eget-v0-
 
     - name: install dependencies
       run: install:all
-      shell: bash
+      shell: devenv shell bash -- -e {0}

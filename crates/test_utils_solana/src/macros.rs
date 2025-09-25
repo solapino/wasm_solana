@@ -1,4 +1,4 @@
-/// Assert that the banks client simulation errors with the provided anchor
+/// Assert that the banks client simulation errors with the provided
 /// error.
 #[macro_export]
 macro_rules! assert_banks_client_simulated_error {

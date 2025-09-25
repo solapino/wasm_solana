@@ -21,6 +21,38 @@ git_release_enable = false
 git_tag_enable = false
 
 [[package]]
+name = "solana-account-decoder-client-types-wasm"
+semver_check = false
+changelog_update = false
+release = false
+git_release_enable = false
+git_tag_enable = false
+
+[[package]]
+name = "solana-account-decoder-wasm"
+semver_check = false
+changelog_update = false
+release = false
+git_release_enable = false
+git_tag_enable = false
+
+[[package]]
+name = "solana-transaction-status-client-types-wasm"
+semver_check = false
+changelog_update = false
+release = false
+git_release_enable = false
+git_tag_enable = false
+
+[[package]]
+name = "solana-transaction-status-wasm"
+semver_check = false
+changelog_update = false
+release = false
+git_release_enable = false
+git_tag_enable = false
+
+[[package]]
 name = "memory_wallet"
 changelog_path = "crates/memory_wallet/changelog.md"
 
@@ -35,15 +67,6 @@ changelog_path = "crates/test_utils_keypairs/changelog.md"
 [[package]]
 name = "test_utils_solana"
 changelog_path = "crates/test_utils_solana/changelog.md"
-
-[[package]]
-name = "test_utils_anchor"
-changelog_path = "crates/test_utils_anchor/changelog.md"
-git_release_enable = false
-
-[[package]]
-name = "wasm_client_anchor"
-changelog_path = "crates/wasm_client_anchor/changelog.md"
 
 [[package]]
 name = "wasm_client_solana"

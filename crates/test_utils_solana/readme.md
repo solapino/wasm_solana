@@ -2,7 +2,7 @@
 
 <br />
 
-> Utilities and extensions for testing solana in wasm compatible environments.
+> Provides utilities and extensions for testing Solana programs. This includes helpers for setting up a test validator, managing test accounts, and interacting with programs in a test environment. It is designed to be compatible with WASM environments.
 
 <br />
 

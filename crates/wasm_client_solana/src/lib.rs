@@ -1,5 +1,10 @@
 #![doc = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/readme.md"))]
 
+pub use solana_account_decoder_client_types_wasm as solana_account_decoder_client_types;
+pub use solana_account_decoder_wasm as solana_account_decoder;
+pub use solana_transaction_status_client_types_wasm as solana_transaction_status_client_types;
+pub use solana_transaction_status_wasm as solana_transaction_status;
+
 pub use crate::client::*;
 pub use crate::constants::*;
 pub use crate::errors::*;
@@ -21,10 +26,7 @@ pub mod rpc_config;
 pub mod rpc_filter;
 pub mod rpc_response;
 pub mod runtime;
-pub mod solana_account_decoder;
 mod solana_client;
-pub mod solana_rpc_client_api;
-pub mod solana_transaction_status;
 pub mod utils;
 
 pub mod prelude {
@@ -38,5 +40,4 @@ pub mod prelude {
 	pub use crate::RpcProvider;
 	pub use crate::extensions::VersionedMessageExtension;
 	pub use crate::extensions::VersionedTransactionExtension;
-	pub use crate::solana_account_decoder::ToUiAccount;
 }

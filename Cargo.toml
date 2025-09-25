@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/*", "programs/*"]
+members = ["crates/*", "forks/*", "programs/*"]
 resolver = "2"
 
 [workspace.package]
@@ -11,12 +11,16 @@ repository = "https://github.com/ifiokjr/wasm_solana"
 rust-version = "1.85.0"
 
 [workspace.dependencies]
+Inflector = "0.11"
+agave-reserved-account-keys = "2"
 anchor-lang = "0.31"
 anchor-spl = "0.31"
 anyhow = "1"
 assert2 = "0.3"
+assert_matches = "1"
 async-trait = "0.1"
 base64 = "0.22"
+bencher = "0.1"
 bincode = "1"
 borsh = "1"
 bs58 = "0.5"
@@ -40,38 +44,92 @@ log = "0.4"
 nacl = "0.5"
 paste = "1"
 pin-project = "1"
-port_check = "0.2"
+port_check = "0.3"
 rand = "0.9"
 regex = "1"
 reqwest = "0.12"
-reqwest-websocket = "0.4"
+reqwest-websocket = "0.5"
 semver = "1"
 send_wrapper = "0.6"
 serde = "1"
 serde-wasm-bindgen = "0.6"
 serde_bytes = "0.11"
+serde_derive = "1" # must match the serde version, see https://github.com/serde-rs/serde/issues/2584#issuecomment-1685252251
 serde_json = "1"
 serde_tuple = "1"
 serde_with = "3"
-solana-banks-client = "2.2"
-solana-banks-interface = "2.2"
-solana-client = "2.2"
-solana-config-program = "2.2"
-solana-faucet = "2.2"
-solana-program = "2.2"
-solana-program-runtime = "2.2"
-solana-program-test = "2.2"
-solana-rpc = "2.2"
-solana-sdk = "2.2"
-solana-test-validator = "2.2"
-solana-version = "2.2"
-solana-zk-token-sdk = "2.2"
+solana-account = "2"
+solana-account-decoder = "2"
+solana-account-decoder-client-types = "2"
+solana-address-lookup-table-interface = "2"
+solana-banks-client = "2"
+solana-banks-interface = "2"
+solana-bpf-loader-program = "2"
+solana-bucket-map = "2"
+solana-builtins = "2"
+solana-builtins-default-costs = "2"
+solana-clap-utils = "2"
+solana-clap-v3-utils = "2"
+solana-cli = "2"
+solana-cli-config = "2"
+solana-cli-output = "2"
+solana-client = "2"
+solana-clock = "2"
+solana-commitment-config = "2"
+solana-config-interface = "2"
+solana-config-program-client = "1"
+solana-epoch-schedule = "2"
+solana-faucet = "2"
+solana-fee-calculator = "2"
+solana-hash = "2"
+solana-instruction = "2"
+solana-keypair = "2"
+solana-loader-v2-interface = "2"
+solana-loader-v3-interface = "5"
+solana-logger = "2"
+solana-message = "2.4"
+solana-metrics = "2"
+solana-nonce = "2"
+solana-packet = "2"
+solana-program = "2"
+solana-program-option = "2"
+solana-program-pack = "2"
+solana-program-runtime = "2"
+solana-program-test = "2"
+solana-pubkey = { version = "2", default-features = false }
+solana-rent = "2"
+solana-reward-info = "2"
+solana-rpc = "2"
+solana-sdk = "2"
+solana-sdk-ids = "2"
+solana-signature = { version = "2", default-features = false }
+solana-signer = "2"
+solana-slot-hashes = "2"
+solana-slot-history = "2"
+solana-stake-interface = "1"
+solana-system-interface = "1"
+solana-system-transaction = "2"
+solana-sysvar = "2"
+solana-test-validator = "2"
+solana-transaction = "2"
+solana-transaction-context = "2"
+solana-transaction-error = "2"
+solana-transaction-status-client-types = "2"
+solana-version = "2"
+solana-vote-interface = "2"
+solana-zk-token-sdk = "2"
 spl-associated-token-account = "7"
+spl-associated-token-account-interface = "1"
+spl-generic-token = "1"
 spl-memo = "6"
-spl-pod = "0.5"
+spl-memo-interface = "1"
+spl-pod = "0.6"
 spl-token = "8"
-spl-token-2022 = "8.0.1"
+spl-token-2022 = "9"
+spl-token-2022-interface = "1"
+spl-token-confidential-transfer-proof-extraction = "0.4"
 spl-token-group-interface = "0.6"
+spl-token-interface = "1"
 spl-token-metadata-interface = "0.7"
 tarpc = "0.29"
 test-log = "0.2"
@@ -87,27 +145,35 @@ web-sys = "0.3"
 zstd = { version = "0.13", default-features = false }
 
 # internal crates
-example_client = { path = "./programs/example_client" }
-example_program = { path = "./programs/example_program" }
+example_client = { path = "programs/example_client" }
+example_program = { path = "programs/example_program" }
 
 # publishable crates
-memory_wallet = { path = "./crates/memory_wallet", version = "0.1.23" }
-test_utils_anchor = { path = "./crates/test_utils_anchor" }
-test_utils_insta = { path = "./crates/test_utils_insta" }
-test_utils_keypairs = { path = "./crates/test_utils_keypairs" }
-test_utils_solana = { path = "./crates/test_utils_solana", version = "0.7.3" }
-wasm_client_anchor = { path = "./crates/wasm_client_anchor", version = "0.8.1" }
-wasm_client_solana = { path = "./crates/wasm_client_solana", version = "0.8.0" }
+memory_wallet = { path = "crates/memory_wallet", version = "0.1.23" }
+test_utils_anchor = { path = "crates/test_utils_anchor" }
+test_utils_insta = { path = "crates/test_utils_insta" }
+test_utils_keypairs = { path = "crates/test_utils_keypairs" }
+test_utils_solana = { path = "crates/test_utils_solana", version = "0.7.3" }
+wasm_client_anchor = { path = "crates/wasm_client_anchor", version = "0.8.1" }
+wasm_client_solana = { path = "crates/wasm_client_solana", version = "0.8.0" }
+
+# forks
+solana-account-decoder-client-types-wasm = { path = "forks/solana-account-decoder-client-types-wasm", version = "2.3.10" }
+solana-account-decoder-wasm = { path = "forks/solana-account-decoder-wasm", version = "2.3.10" }
+solana-transaction-status-client-types-wasm = { path = "forks/solana-transaction-status-client-types-wasm", version = "2.3.10" }
+solana-transaction-status-wasm = { path = "forks/solana-transaction-status-wasm", version = "2.3.10" }
 
 [workspace.metadata.bin]
 anchor-cli = { version = "0.31.1", bins = ["anchor"] }
-cargo-insta = { version = "1.42.2" }
-cargo-llvm-cov = { version = "0.6.16" }
-cargo-nextest = { version = "0.9.93" }
-cargo-semver-checks = { version = "0.40.0" }
-release-plz = { version = "0.3.130", bins = ["release-plz"] }
-wait-for-them = { version = "0.5.0", bins = ["wait-for-them"] }
-wasm-bindgen-cli = { version = "0.2.100", bins = ["wasm-bindgen", "wasm-bindgen-test-runner"] }
+cargo-easy-dep = { version = "0.1.1" }
+cargo-insta = { version = "1.43.2" }
+cargo-interactive-update = { version = "0.6.2" }
+cargo-llvm-cov = { version = "0.6.19" }
+cargo-nextest = { version = "0.9.104" }
+cargo-semver-checks = { version = "0.44.0" }
+release-plz = { version = "0.3.147", bins = ["release-plz"] }
+wait-for-them = { version = "0.5.1", bins = ["wait-for-them"] }
+wasm-bindgen-cli = { version = "0.2.103", bins = ["wasm-bindgen", "wasm-bindgen-test-runner"] }
 
 [profile.dev.package]
 insta.opt-level = 3

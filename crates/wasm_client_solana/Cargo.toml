@@ -9,7 +9,7 @@ license = { workspace = true }
 readme = "readme.md"
 repository = { workspace = true }
 rust-version = { workspace = true }
-tags = ["solana", "wallet", "web3", "blockchain", "websocket", "rpc", "pubsub"]
+# tags = ["solana", "wallet", "web3", "blockchain", "websocket", "rpc", "pubsub"]
 description = "A wasm compatible solana rpc and pubsub client"
 
 [lints]
@@ -46,8 +46,12 @@ serde_bytes = { workspace = true }
 serde_json = { workspace = true }
 serde_tuple = { workspace = true }
 serde_with = { workspace = true }
+solana-account-decoder-client-types-wasm = { workspace = true }
+solana-account-decoder-wasm = { workspace = true }
 solana-program = { workspace = true }
 solana-sdk = { workspace = true }
+solana-transaction-status-client-types-wasm = { workspace = true }
+solana-transaction-status-wasm = { workspace = true }
 solana-version = { workspace = true }
 solana-zk-token-sdk = { workspace = true }
 spl-associated-token-account = { workspace = true, features = ["no-entrypoint"] }

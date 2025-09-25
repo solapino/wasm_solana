@@ -2,7 +2,7 @@
 
 <br />
 
-> A wasm compatible solana rpc and pubsub client.
+> A WebAssembly (WASM) compatible client for interacting with the Solana RPC and PubSub APIs. It allows for sending transactions, fetching account data, subscribing to account changes, and more, from within a WASM environment like a web browser or serverless functions.
 
 <br />
 

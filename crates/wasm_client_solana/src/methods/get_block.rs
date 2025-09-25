@@ -31,7 +31,7 @@ impl GetBlockRequest {
 	}
 }
 
-#[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct GetBlockResponse(UiConfirmedBlock);
 
 impl From<GetBlockResponse> for UiConfirmedBlock {
