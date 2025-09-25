@@ -21,12 +21,7 @@
       protobuf # needed for `solana-test-validator` in tests
       rustup
       shfmt
-      # libgcc
-      gnumake
-      autoconf
-      pkg-config
-      libtool
-      zlib
+      gcc
     ]
     ++ lib.optionals stdenv.isDarwin [
       libiconv
@@ -35,6 +30,8 @@
 
   env = {
     EGET_CONFIG = "${config.env.DEVENV_ROOT}/.eget/.eget.toml";
+    CC = "${pkgs.gcc}/bin/gcc";
+    CXX = "${pkgs.gcc}/bin/g++";
   };
 
   # Rely on the global sdk for now as the nix apple sdk is not working for me.
@@ -44,8 +41,6 @@
   enterShell = ''
     set -e
     export PATH="$DEVENV_ROOT/.eget/bin:$PATH"
-    echo "DEBUG: LIBCLANG_PATH=$LIBCLANG_PATH"
-    echo "DEBUG: CLANG_PATH=$CLANG_PATH"
   '';
 
   # disable dotenv since it breaks the variable interpolation supported by `direnv`
