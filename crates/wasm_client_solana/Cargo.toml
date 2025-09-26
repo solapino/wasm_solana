@@ -69,6 +69,9 @@ wasm-bindgen-futures = { workspace = true }
 web-sys = { workspace = true, features = ["console", "HtmlDocument", "Window", "AbortController", "Request", "RequestInit", "AbortSignal", "Response", "Headers"] }
 zstd = { workspace = true, optional = true }
 
+[target.'cfg(all(target_arch = "wasm32", target_os = "unknown"))'.dependencies]
+getrandom = { version = "0.3", features = ["wasm_js"] }
+
 [dev-dependencies]
 anyhow = { workspace = true }
 assert2 = { workspace = true }
