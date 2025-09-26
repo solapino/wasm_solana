@@ -1,7 +1,5 @@
 use std::str::FromStr;
 
-use serde::Deserialize;
-use serde::Serialize;
 pub use solana_account_decoder_client_types_wasm::token::TokenAccountType;
 pub use solana_account_decoder_client_types_wasm::token::UiAccountState;
 pub use solana_account_decoder_client_types_wasm::token::UiMint;
@@ -126,10 +124,10 @@ pub fn parse_token_v3(
 				.signers
 				.iter()
 				.filter_map(|pubkey| {
-					if pubkey != &Pubkey::default() {
-						Some(pubkey.to_string())
-					} else {
+					if pubkey == &Pubkey::default() {
 						None
+					} else {
+						Some(pubkey.to_string())
 					}
 				})
 				.collect(),
@@ -177,7 +175,7 @@ pub fn token_amount_to_ui_amount_v3(
 			ui_amount_string
 				.as_ref()
 				.and_then(|x| f64::from_str(x).ok()),
-			ui_amount_string.unwrap_or("".to_string()),
+			ui_amount_string.unwrap_or(String::new()),
 		)
 	} else if let Some((scaled_ui_amount_config, unix_timestamp)) =
 		additional_data.scaled_ui_amount_config
@@ -188,11 +186,11 @@ pub fn token_amount_to_ui_amount_v3(
 			ui_amount_string
 				.as_ref()
 				.and_then(|x| f64::from_str(x).ok()),
-			ui_amount_string.unwrap_or("".to_string()),
+			ui_amount_string.unwrap_or(String::new()),
 		)
 	} else {
 		let ui_amount = 10_usize
-			.checked_pow(decimals as u32)
+			.checked_pow(u32::from(decimals))
 			.map(|dividend| amount as f64 / dividend as f64);
 		(ui_amount, real_number_string_trimmed(amount, decimals))
 	};
@@ -213,7 +211,6 @@ pub fn get_token_account_mint(data: &[u8]) -> Option<Pubkey> {
 #[cfg(test)]
 mod test {
 	use solana_account_decoder_client_types_wasm::token::UiExtension;
-	use spl_pod::optional_keys::OptionalNonZeroPubkey;
 	use spl_token_2022::extension::BaseStateWithExtensionsMut;
 	use spl_token_2022::extension::ExtensionType;
 	use spl_token_2022::extension::StateWithExtensionsMut;
@@ -290,14 +287,14 @@ mod test {
 			}),
 		);
 
-		let signer1 = Pubkey::new_from_array([1; 32]);
-		let signer2 = Pubkey::new_from_array([2; 32]);
-		let signer3 = Pubkey::new_from_array([3; 32]);
+		let first_signer = Pubkey::new_from_array([1; 32]);
+		let second_signer = Pubkey::new_from_array([2; 32]);
+		let third_signer = Pubkey::new_from_array([3; 32]);
 		let mut multisig_data = vec![0; Multisig::get_packed_len()];
 		let mut signers = [Pubkey::default(); 11];
-		signers[0] = signer1;
-		signers[1] = signer2;
-		signers[2] = signer3;
+		signers[0] = first_signer;
+		signers[1] = second_signer;
+		signers[2] = third_signer;
 		let mut multisig = Multisig::unpack_unchecked(&multisig_data).unwrap();
 		multisig.m = 2;
 		multisig.n = 3;
@@ -312,9 +309,9 @@ mod test {
 				num_valid_signers: 3,
 				is_initialized: true,
 				signers: vec![
-					signer1.to_string(),
-					signer2.to_string(),
-					signer3.to_string()
+					first_signer.to_string(),
+					second_signer.to_string(),
+					third_signer.to_string()
 				],
 			}),
 		);
@@ -367,7 +364,7 @@ mod test {
 			token_amount.ui_amount_string,
 			real_number_string_trimmed(1, 9)
 		);
-		assert_eq!(token_amount.ui_amount, Some(0.000000001));
+		assert_eq!(token_amount.ui_amount, Some(0.000_000_001));
 		assert_eq!(&real_number_string(1_000_000_000, 9), "1.000000000");
 		assert_eq!(&real_number_string_trimmed(1_000_000_000, 9), "1");
 		let token_amount = token_amount_to_ui_amount_v3(
@@ -389,7 +386,7 @@ mod test {
 			token_amount.ui_amount_string,
 			real_number_string_trimmed(1_234_567_890, 3)
 		);
-		assert_eq!(token_amount.ui_amount, Some(1234567.89));
+		assert_eq!(token_amount.ui_amount, Some(1_234_567.89));
 		assert_eq!(
 			&real_number_string(1_234_567_890, 25),
 			"0.0000000000000001234567890"
@@ -432,14 +429,18 @@ mod test {
 				.ui_amount_string
 				.starts_with("1.051271096376024117")
 		);
-		assert!((token_amount.ui_amount.unwrap() - 1.0512710963760241f64).abs() < f64::EPSILON);
+		assert!(
+			(token_amount.ui_amount.unwrap() - 1.051_271_096_376_024_1_f64).abs() < f64::EPSILON
+		);
 		let token_amount = token_amount_to_ui_amount_v3(TEN, &additional_data);
 		assert!(
 			token_amount
 				.ui_amount_string
 				.starts_with("10.512710963760241611")
 		);
-		assert!((token_amount.ui_amount.unwrap() - 10.512710963760242f64).abs() < f64::EPSILON);
+		assert!(
+			(token_amount.ui_amount.unwrap() - 10.512_710_963_760_242_f64).abs() < f64::EPSILON
+		);
 
 		// huge case
 		let config = InterestBearingConfig {
@@ -475,7 +476,7 @@ mod test {
 		const TEN: u64 = 10_000_000_000_000_000_000;
 		let token_amount = token_amount_to_ui_amount_v3(ONE, &additional_data);
 		assert_eq!(token_amount.ui_amount_string, "2");
-		assert!(token_amount.ui_amount_string.starts_with("2"));
+		assert!(token_amount.ui_amount_string.starts_with('2'));
 		assert!((token_amount.ui_amount.unwrap() - 2.0).abs() < f64::EPSILON);
 		let token_amount = token_amount_to_ui_amount_v3(TEN, &additional_data);
 		assert!(token_amount.ui_amount_string.starts_with("20"));
@@ -667,9 +668,7 @@ mod test {
 		let mint_close_authority = mint_state
 			.init_extension::<MintCloseAuthority>(true)
 			.unwrap();
-		mint_close_authority.close_authority =
-			OptionalNonZeroPubkey::try_from(Some(owner_pubkey)).unwrap();
-
+		mint_close_authority.close_authority = Some(owner_pubkey).try_into().unwrap();
 		mint_state.base = mint_base;
 		mint_state.pack_base();
 		mint_state.init_account_type().unwrap();

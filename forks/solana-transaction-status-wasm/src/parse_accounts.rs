@@ -9,7 +9,7 @@ pub fn parse_legacy_message_accounts(message: &Message) -> Vec<ParsedAccount> {
 	let mut accounts: Vec<ParsedAccount> = vec![];
 	for (i, account_key) in message.account_keys.iter().enumerate() {
 		accounts.push(ParsedAccount {
-			pubkey: account_key.to_string(),
+			pubkey: *account_key,
 			writable: message.is_maybe_writable(i, Some(&reserved_account_keys)),
 			signer: message.is_signer(i),
 			source: Some(ParsedAccountSource::Transaction),
@@ -27,7 +27,7 @@ pub fn parse_v0_message_accounts(message: &LoadedMessage) -> Vec<ParsedAccount> 
 			ParsedAccountSource::LookupTable
 		};
 		accounts.push(ParsedAccount {
-			pubkey: account_key.to_string(),
+			pubkey: *account_key,
 			writable: message.is_writable(i),
 			signer: message.is_signer(i),
 			source: Some(source),
@@ -66,25 +66,25 @@ mod test {
 			parse_legacy_message_accounts(&message),
 			vec![
 				ParsedAccount {
-					pubkey: pubkey0.to_string(),
+					pubkey: pubkey0,
 					writable: true,
 					signer: true,
 					source: Some(ParsedAccountSource::Transaction),
 				},
 				ParsedAccount {
-					pubkey: pubkey1.to_string(),
+					pubkey: pubkey1,
 					writable: false,
 					signer: true,
 					source: Some(ParsedAccountSource::Transaction),
 				},
 				ParsedAccount {
-					pubkey: pubkey2.to_string(),
+					pubkey: pubkey2,
 					writable: true,
 					signer: false,
 					source: Some(ParsedAccountSource::Transaction),
 				},
 				ParsedAccount {
-					pubkey: pubkey3.to_string(),
+					pubkey: pubkey3,
 					writable: false,
 					signer: false,
 					source: Some(ParsedAccountSource::Transaction),
@@ -122,37 +122,37 @@ mod test {
 			parse_v0_message_accounts(&message),
 			vec![
 				ParsedAccount {
-					pubkey: pubkey0.to_string(),
+					pubkey: pubkey0,
 					writable: true,
 					signer: true,
 					source: Some(ParsedAccountSource::Transaction),
 				},
 				ParsedAccount {
-					pubkey: pubkey1.to_string(),
+					pubkey: pubkey1,
 					writable: false,
 					signer: true,
 					source: Some(ParsedAccountSource::Transaction),
 				},
 				ParsedAccount {
-					pubkey: pubkey2.to_string(),
+					pubkey: pubkey2,
 					writable: true,
 					signer: false,
 					source: Some(ParsedAccountSource::Transaction),
 				},
 				ParsedAccount {
-					pubkey: pubkey3.to_string(),
+					pubkey: pubkey3,
 					writable: false,
 					signer: false,
 					source: Some(ParsedAccountSource::Transaction),
 				},
 				ParsedAccount {
-					pubkey: pubkey4.to_string(),
+					pubkey: pubkey4,
 					writable: true,
 					signer: false,
 					source: Some(ParsedAccountSource::LookupTable),
 				},
 				ParsedAccount {
-					pubkey: pubkey5.to_string(),
+					pubkey: pubkey5,
 					writable: false,
 					signer: false,
 					source: Some(ParsedAccountSource::LookupTable),

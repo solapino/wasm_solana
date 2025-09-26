@@ -9,19 +9,29 @@ use base64::prelude::BASE64_STANDARD;
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
 use serde_json::Value;
+use serde_with::DisplayFromStr;
+use serde_with::serde_as;
+use serde_with::skip_serializing_none;
 use solana_account::WritableAccount;
 use solana_pubkey::Pubkey;
+use typed_builder::TypedBuilder;
+
 pub mod token;
 
 /// A duplicate representation of an Account for pretty JSON serialization
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq)]
+#[serde_as]
+#[skip_serializing_none]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, TypedBuilder)]
 #[serde(rename_all = "camelCase")]
 pub struct UiAccount {
 	pub lamports: u64,
 	pub data: UiAccountData,
-	pub owner: String,
+	#[serde_as(as = "DisplayFromStr")]
+	pub owner: Pubkey,
+	#[builder(setter(into, strip_bool(fallback = executable_bool)))]
 	pub executable: bool,
 	pub rent_epoch: u64,
+	#[builder(default, setter(into, strip_option(fallback = space_opt)))]
 	pub space: Option<u64>,
 }
 
@@ -79,7 +89,7 @@ impl UiAccount {
 		Some(T::create(
 			self.lamports,
 			data,
-			Pubkey::from_str(&self.owner).ok()?,
+			self.owner,
 			self.executable,
 			self.rent_epoch,
 		))

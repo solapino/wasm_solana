@@ -39,6 +39,7 @@ use wasm_client_solana::SolanaRpcClient;
 use wasm_client_solana::rpc_response::RpcBlockhash;
 use wasm_client_solana::solana_account_decoder::UiAccount;
 use wasm_client_solana::solana_account_decoder::UiAccountEncoding;
+use wasm_client_solana::solana_account_decoder::encode_ui_account;
 use wasm_client_solana::solana_transaction_status::TransactionConfirmationStatus;
 use wasm_client_solana::solana_transaction_status::TransactionStatus;
 
@@ -104,7 +105,7 @@ impl RpcProvider for TestRpcProvider {
 					let result = GetAccountInfoResponse {
 						context,
 						value: account.map(|account| {
-							UiAccount::encode(
+							encode_ui_account(
 								&request.pubkey,
 								&account,
 								encoding,
@@ -184,7 +185,8 @@ impl RpcProvider for TestRpcProvider {
 								maybe_status.map(|status| {
 									TransactionStatus {
 										slot: status.slot,
-										confirmations: status.confirmations.map(|v| v as u64),
+										confirmations: status.confirmations.map(|v| v as usize),
+										status: Ok(()), // legacy field
 										err: status.err,
 										confirmation_status: status.confirmation_status.map(|v| {
 											match v {
@@ -221,7 +223,7 @@ impl RpcProvider for TestRpcProvider {
 							let account = client.banks_client.get_account(*pubkey).await.unwrap();
 
 							account.map(|account| {
-								UiAccount::encode(pubkey, &account, encoding, None, data_slice)
+								encode_ui_account(pubkey, &account, encoding, None, data_slice)
 							})
 						}
 					});

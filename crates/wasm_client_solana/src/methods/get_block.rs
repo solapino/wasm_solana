@@ -136,6 +136,7 @@ mod tests {
 					loaded_addresses: None,
 					return_data: None,
 					compute_units_consumed: None,
+					cost_units: None,
 
 			}),
 			transaction: EncodedTransaction::Json(UiTransaction {

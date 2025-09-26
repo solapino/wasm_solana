@@ -7,7 +7,7 @@ use anchor_lang::Result;
 use anchor_lang::error::Error;
 use anchor_lang::error::ErrorCode;
 use anchor_lang::solana_program::account_info::AccountInfo;
-use solana_program::system_program;
+use solana_sdk_ids::system_program;
 
 /// In new versions of anchor the `Account` struct requires the lifetime
 /// parameter to live longer than `'info`. This makes it difficult to generate

@@ -9,7 +9,7 @@ license = { workspace = true }
 readme = "readme.md"
 repository = { workspace = true }
 rust-version = { workspace = true }
-tags = ["solana", "wallet", "web3", "blockchain", "anchor"]
+# tags = ["solana", "wallet", "web3", "blockchain", "anchor"]
 description = "A wasm compatible anchor client"
 
 [lints]
@@ -34,6 +34,7 @@ serde_json = { workspace = true }
 serde_with = { workspace = true }
 solana-program = { workspace = true }
 solana-sdk = { workspace = true }
+solana-sdk-ids = { workspace = true }
 thiserror = { workspace = true }
 typed-builder = { workspace = true }
 wallet_standard = { workspace = true, features = ["solana"] }

@@ -138,6 +138,7 @@ mod tests {
 					Some(TransactionStatus {
 						slot: 48,
 						err: None,
+						status: Ok(()),
 						confirmation_status: Some(TransactionConfirmationStatus::Finalized),
 						confirmations: None
 					}),

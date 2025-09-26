@@ -19,9 +19,13 @@ bs58 = { workspace = true }
 serde = { workspace = true }
 serde_derive = { workspace = true }
 serde_json = { workspace = true }
+serde_with = { workspace = true }
 solana-account-decoder-client-types-wasm = { workspace = true }
+solana-clock = { workspace = true, features = ["serde"] }
 solana-commitment-config = { workspace = true }
+solana-hash = { workspace = true, features = ["serde", "bytemuck", "borsh"] }
 solana-message = { workspace = true }
+solana-pubkey = { workspace = true, features = ["serde", "bytemuck", "borsh"] }
 solana-reward-info = { workspace = true, features = ["serde"] }
 solana-signature = { workspace = true, default-features = false }
 solana-transaction = { workspace = true, features = ["serde"] }

@@ -23,6 +23,8 @@ bs58 = { workspace = true, features = ["std"] }
 serde = { workspace = true }
 serde_derive = { workspace = true }
 serde_json = { workspace = true }
+serde_with = { workspace = true }
 solana-account = { workspace = true }
-solana-pubkey = { workspace = true }
+solana-pubkey = { workspace = true, features = ["serde", "bytemuck"] }
+typed-builder = { workspace = true }
 zstd = { workspace = true, optional = true }

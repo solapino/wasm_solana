@@ -1,9 +1,16 @@
 use std::collections::HashMap;
 
+use base64::Engine;
+use base64::prelude::BASE64_STANDARD;
 use inflector::Inflector;
 use serde::Deserialize;
 use serde::Serialize;
+use solana_account::ReadableAccount;
 pub use solana_account_decoder_client_types_wasm::ParsedAccount;
+use solana_account_decoder_client_types_wasm::UiAccount;
+use solana_account_decoder_client_types_wasm::UiAccountData;
+use solana_account_decoder_client_types_wasm::UiAccountEncoding;
+use solana_account_decoder_client_types_wasm::UiDataSliceConfig;
 use solana_clock::UnixTimestamp;
 use solana_instruction::error::InstructionError;
 use solana_pubkey::Pubkey;
@@ -18,6 +25,7 @@ use spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig;
 use spl_token_2022::extension::scaled_ui_amount::ScaledUiAmountConfig;
 use thiserror::Error;
 
+use crate::MAX_BASE58_BYTES;
 use crate::parse_address_lookup_table::parse_address_lookup_table;
 use crate::parse_bpf_loader::parse_bpf_upgradeable_loader;
 use crate::parse_config::parse_config;
@@ -26,6 +34,7 @@ use crate::parse_stake::parse_stake;
 use crate::parse_sysvar::parse_sysvar;
 use crate::parse_token::parse_token_v3;
 use crate::parse_vote::parse_vote;
+use crate::slice_data;
 
 pub static PARSABLE_PROGRAM_IDS: std::sync::LazyLock<HashMap<Pubkey, ParsableAccount>> =
 	std::sync::LazyLock::new(|| {
@@ -90,6 +99,86 @@ pub struct AccountAdditionalData {
 #[derive(Clone, Copy, Default)]
 pub struct AccountAdditionalDataV2 {
 	pub spl_token_additional_data: Option<SplTokenAdditionalData>,
+}
+
+pub trait EncodeUiAccount {}
+
+fn encode_ui_accout_bs58<T: ReadableAccount>(
+	account: &T,
+	data_slice_config: Option<UiDataSliceConfig>,
+) -> String {
+	let slice = slice_data(account.data(), data_slice_config);
+	if slice.len() <= MAX_BASE58_BYTES {
+		bs58::encode(slice).into_string()
+	} else {
+		"error: data too large for bs58 encoding".to_string()
+	}
+}
+
+pub fn encode_ui_account<T: ReadableAccount>(
+	pubkey: &Pubkey,
+	account: &T,
+	encoding: UiAccountEncoding,
+	additional_data: Option<AccountAdditionalDataV2>,
+	data_slice_config: Option<UiDataSliceConfig>,
+) -> UiAccount {
+	let space = account.data().len();
+	let data = match encoding {
+		UiAccountEncoding::Binary => {
+			let data = encode_ui_accout_bs58(account, data_slice_config);
+			UiAccountData::LegacyBinary(data)
+		}
+		UiAccountEncoding::Base58 => {
+			let data = encode_ui_accout_bs58(account, data_slice_config);
+			UiAccountData::Binary(data, encoding)
+		}
+		UiAccountEncoding::Base64 => {
+			UiAccountData::Binary(
+				BASE64_STANDARD.encode(slice_data(account.data(), data_slice_config)),
+				encoding,
+			)
+		}
+		#[cfg(not(feature = "zstd"))]
+		UiAccountEncoding::Base64Zstd => todo!("zstd not supported without the zstd feature flag"),
+		#[cfg(feature = "zstd")]
+		UiAccountEncoding::Base64Zstd => {
+			use std::io::Write;
+
+			let mut encoder = zstd::stream::write::Encoder::new(Vec::new(), 0).unwrap();
+			match encoder
+				.write_all(slice_data(account.data(), data_slice_config))
+				.and_then(|()| encoder.finish())
+			{
+				Ok(zstd_data) => UiAccountData::Binary(BASE64_STANDARD.encode(zstd_data), encoding),
+				Err(_) => {
+					UiAccountData::Binary(
+						BASE64_STANDARD.encode(slice_data(account.data(), data_slice_config)),
+						UiAccountEncoding::Base64,
+					)
+				}
+			}
+		}
+		UiAccountEncoding::JsonParsed => {
+			if let Ok(parsed_data) =
+				parse_account_data_v2(pubkey, account.owner(), account.data(), additional_data)
+			{
+				UiAccountData::Json(parsed_data)
+			} else {
+				UiAccountData::Binary(
+					BASE64_STANDARD.encode(slice_data(account.data(), data_slice_config)),
+					UiAccountEncoding::Base64,
+				)
+			}
+		}
+	};
+	UiAccount {
+		lamports: account.lamports(),
+		data,
+		owner: *account.owner(),
+		executable: account.executable(),
+		rent_epoch: account.rent_epoch(),
+		space: Some(space as u64),
+	}
 }
 
 #[derive(Clone, Copy, Default)]

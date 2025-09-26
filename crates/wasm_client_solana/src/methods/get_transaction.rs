@@ -149,6 +149,7 @@ mod tests {
                             log_messages: None,
                             return_data: None,
 														compute_units_consumed: None,
+														cost_units: None,
                         }),
                     }
             })

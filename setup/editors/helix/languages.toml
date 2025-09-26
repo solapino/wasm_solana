@@ -7,6 +7,9 @@ formatting = { command = ["nixfmt"] }
 [language-server.tailwindcss-ls]
 config = { userLanguages = { rust = "html", "*.rs" = "html" } }
 
+[language-server.rust-analyzer]
+environment = { SDKROOT = "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk" }
+
 [language-server.rust-analyzer.config.check]
 command = "clippy"
 features = "all"

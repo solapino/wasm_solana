@@ -123,7 +123,7 @@ pub fn parse(
 	};
 	Ok(ParsedInstruction {
 		program: format!("{program_name:?}").to_kebab_case(),
-		program_id: program_id.to_string(),
+		program_id: *program_id,
 		parsed: parsed_json,
 		stack_height,
 	})
@@ -171,7 +171,7 @@ mod test {
 			parse(&spl_memo::v1::id(), &memo_instruction, &no_keys, None).unwrap(),
 			ParsedInstruction {
 				program: "spl-memo".to_string(),
-				program_id: spl_memo::v1::id().to_string(),
+				program_id: spl_memo::v1::id(),
 				parsed: json!("🦖"),
 				stack_height: None,
 			}
@@ -180,7 +180,7 @@ mod test {
 			parse(&spl_memo::id(), &memo_instruction, &no_keys, Some(1)).unwrap(),
 			ParsedInstruction {
 				program: "spl-memo".to_string(),
-				program_id: spl_memo::id().to_string(),
+				program_id: spl_memo::id(),
 				parsed: json!("🦖"),
 				stack_height: Some(1),
 			}

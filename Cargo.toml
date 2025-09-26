@@ -104,6 +104,7 @@ solana-sdk = "2"
 solana-sdk-ids = "2"
 solana-signature = { version = "2", default-features = false }
 solana-signer = "2"
+solana-sk-sdk = "2"
 solana-slot-hashes = "2"
 solana-slot-history = "2"
 solana-stake-interface = "1"
