@@ -4,16 +4,12 @@ use std::net::IpAddr;
 use std::net::Ipv4Addr;
 use std::net::SocketAddr;
 use std::path::PathBuf;
-use std::pin::Pin;
 use std::sync::Arc;
+use std::sync::LazyLock;
 use std::sync::Mutex;
 
 use anyhow::Result;
 use crossbeam_channel::unbounded;
-use futures::Future;
-use futures::FutureExt;
-use futures::future::Shared;
-use lazy_static::lazy_static;
 use port_check::is_local_ipv4_port_free;
 use rand::Rng;
 use send_wrapper::SendWrapper;
@@ -62,17 +58,6 @@ pub struct TestValidatorRunnerProps {
 	/// data and state.
 	#[builder(default)]
 	pub accounts: HashMap<Pubkey, AccountSharedData>,
-	/// The namespace to use for the validator client rpc. This is used to share
-	/// runners. Leave blank to always create a new runner.
-	///
-	/// This should only be used when sure that the runners are not launched in
-	/// separate threads. If this is the case you will see the following error:
-	///
-	/// ```markup
-	/// Dropped SendWrapper<T> variable from a thread different to the one it has been created with.
-	/// ```
-	#[builder(default, setter(into, strip_option(fallback = namespace_opt)))]
-	pub namespace: Option<&'static str>,
 	/// Warp the ledger to `warp_slot` after starting the validator.
 	#[builder(default = 1000, setter(into))]
 	pub warp_slot: Slot,
@@ -187,8 +172,6 @@ pub struct TestValidatorRunner {
 	mint_keypair: Arc<Keypair>,
 	/// The rpc client for the validator.
 	rpc: SolanaRpcClient,
-	/// The namespace for this runner.
-	namespace: Option<&'static str>,
 }
 
 impl TestValidatorRunner {
@@ -200,7 +183,6 @@ impl TestValidatorRunner {
 			initial_lamports,
 			commitment,
 			accounts,
-			namespace,
 			warp_slot,
 			epoch_schedule,
 		}: TestValidatorRunnerProps,
@@ -271,7 +253,6 @@ impl TestValidatorRunner {
 			validator: Arc::new(validator),
 			mint_keypair: Arc::new(mint_keypair),
 			rpc,
-			namespace,
 		};
 
 		Ok(runner)
@@ -284,29 +265,11 @@ impl TestValidatorRunner {
 	/// use test_utils_solana::TestValidatorRunnerProps;
 	///
 	/// async fn run() -> TestValidatorRunner {
-	/// 	TestValidatorRunner::run(
-	/// 		TestValidatorRunnerProps::builder()
-	/// 			.namespace("tests")
-	/// 			.build(),
-	/// 	)
-	/// 	.await
+	/// 	TestValidatorRunner::run(TestValidatorRunnerProps::default()).await
 	/// }
 	/// ```
 	pub async fn run(props: TestValidatorRunnerProps) -> Self {
-		let namespace = props.namespace;
-
-		if let Some(wrapped_future) = namespace.and_then(get_runner_future) {
-			return wrapped_future.await;
-		}
-
-		let future = async { Self::run_internal(props).await.unwrap() };
-		let wrapped_future = SendWrapper::new(future.boxed().shared());
-
-		if let Some(name) = namespace {
-			set_runner_future(name, wrapped_future.clone());
-		}
-
-		wrapped_future.await
+		Self::run_internal(props).await.unwrap()
 	}
 
 	pub fn rpc_url(&self) -> String {
@@ -336,10 +299,6 @@ impl TestValidatorRunner {
 	pub fn mint_keypair(&self) -> &Keypair {
 		&self.mint_keypair
 	}
-
-	pub fn namespace(&self) -> Option<&'static str> {
-		self.namespace
-	}
 }
 
 impl Drop for TestValidatorRunner {
@@ -350,24 +309,8 @@ impl Drop for TestValidatorRunner {
 	}
 }
 
-lazy_static! {
-	static ref USED_PORTS: Arc<Mutex<HashSet<u16>>> = Arc::new(Mutex::new(HashSet::new()));
-	static ref RUNNERS: Arc<Mutex<HashMap<&'static str, RunnerFuture>>> =
-		Arc::new(Mutex::new(HashMap::new()));
-}
-
-pub type RunnerFuture =
-	SendWrapper<Shared<Pin<Box<dyn Future<Output = TestValidatorRunner> + Send>>>>;
-
-fn set_runner_future(name: &'static str, runner: RunnerFuture) {
-	let mut runners = RUNNERS.lock().unwrap();
-	runners.insert(name, runner);
-}
-
-fn get_runner_future(name: &'static str) -> Option<RunnerFuture> {
-	let runners = RUNNERS.lock().unwrap();
-	runners.get(name).cloned()
-}
+static USED_PORTS: LazyLock<Arc<Mutex<HashSet<u16>>>> =
+	LazyLock::new(|| Arc::new(Mutex::new(HashSet::new())));
 
 fn is_port_available(port: u16) -> bool {
 	let used_ports = USED_PORTS.lock().unwrap();

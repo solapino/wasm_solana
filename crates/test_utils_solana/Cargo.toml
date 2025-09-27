@@ -23,7 +23,6 @@ chrono-humanize = { workspace = true }
 crossbeam-channel = { workspace = true }
 derive_more = { workspace = true, features = ["deref", "deref_mut"] }
 futures = { workspace = true }
-lazy_static = { workspace = true }
 log = { workspace = true }
 port_check = { workspace = true }
 rand = { workspace = true }

@@ -33,7 +33,6 @@ futures-timer = { workspace = true }
 gloo-net = { workspace = true, features = ["websocket"] }
 heck = { workspace = true }
 js-sys = { workspace = true }
-lazy_static = { workspace = true }
 log = { workspace = true }
 pin-project = { workspace = true }
 reqwest = { workspace = true, optional = true, features = ["json"] }
