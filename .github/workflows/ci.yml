@@ -17,7 +17,7 @@ concurrency:
 jobs:
   lint:
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
@@ -42,7 +42,7 @@ jobs:
 
   docs:
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     env:
       RUSTUP_TOOLCHAIN: "nightly"
     steps:
@@ -61,7 +61,7 @@ jobs:
 
   test:
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
@@ -108,7 +108,7 @@ jobs:
 
   coverage:
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
@@ -161,7 +161,7 @@ jobs:
 
   build:
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
@@ -180,10 +180,16 @@ jobs:
         run: build:all
         shell: devenv shell bash -- -e {0}
 
+      - name: build wasm
+        env:
+          RUSTFLAGS: '--cfg getrandom_backend="wasm_js"'
+        run: cargo build -p wasm_client_solana --target wasm32-unknown-unknown
+        shell: devenv shell bash -- -e {0}
+
   release:
     timeout-minutes: 60
     if: github.event_name == 'push'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     needs: [test, lint, build]
     steps:
       - name: generate token
