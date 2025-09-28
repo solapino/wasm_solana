@@ -13,14 +13,17 @@ runs:
   using: composite
   steps:
     - name: free disk space (ubuntu)
-      uses: jlumbroso/free-disk-space@v1.3.1
+      uses: wimpysworld/nothing-but-nix@v6
       with:
-        tool-cache: true
+        hatchet-protocol: "cleave"
+        witness-carnage: true
 
-    - name: install nix
-      uses: cachix/install-nix-action@v31
-      with:
-        github_access_token: ${{ inputs.github-token }}
+    # - name: install nix
+    #   uses: cachix/install-nix-action@v31
+    #   with:
+    #     github_access_token: ${{ inputs.github-token }}
+    - name: install determinate nix
+      uses: DeterminateSystems/nix-installer-action@v20
 
     - name: enable cachix
       uses: cachix/cachix-action@v16
