@@ -14,7 +14,7 @@ use test_utils_keypairs::get_wallet_keypair;
 use test_utils_solana::ProgramTest;
 use test_utils_solana::TestRpcProvider;
 
-#[test_log::test(tokio::test)]
+#[test_log::test(tokio::test(flavor = "multi_thread"))]
 async fn initialize() -> Result<()> {
 	let keypair = get_wallet_keypair();
 	let pubkey = keypair.pubkey();
@@ -45,7 +45,7 @@ async fn initialize() -> Result<()> {
 	Ok(())
 }
 
-#[test_log::test(tokio::test)]
+#[test_log::test(tokio::test(flavor = "multi_thread"))]
 async fn composition() -> Result<()> {
 	let unchecked = Pubkey::new_unique();
 	let signer_keypair = Keypair::new();

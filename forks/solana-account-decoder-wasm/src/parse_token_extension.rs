@@ -1,5 +1,3 @@
-use serde::Deserialize;
-use serde::Serialize;
 pub use solana_account_decoder_client_types_wasm::token::UiConfidentialMintBurn;
 pub use solana_account_decoder_client_types_wasm::token::UiConfidentialTransferAccount;
 pub use solana_account_decoder_client_types_wasm::token::UiConfidentialTransferFeeAmount;

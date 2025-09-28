@@ -30,7 +30,7 @@ pub fn parse_nonce(data: &[u8]) -> Result<UiNonceState, ParseAccountError> {
 	}
 }
 
-/// A duplicate representation of NonceState for pretty JSON serialization
+/// A duplicate representation of `NonceState` for pretty JSON serialization
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase", tag = "type", content = "info")]
 pub enum UiNonceState {

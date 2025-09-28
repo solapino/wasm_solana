@@ -1,6 +1,5 @@
 //! Core RPC client types for solana-account-decoder
 #![cfg_attr(docsrs, feature(doc_auto_cfg))]
-use core::str::FromStr;
 #[cfg(feature = "zstd")]
 use std::io::Read;
 

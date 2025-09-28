@@ -78,7 +78,7 @@ pub enum VoteAccountType {
 	Vote(UiVoteState),
 }
 
-/// A duplicate representation of VoteState for pretty JSON serialization
+/// A duplicate representation of `VoteState` for pretty JSON serialization
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct UiVoteState {

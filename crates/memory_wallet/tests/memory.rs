@@ -23,7 +23,7 @@ use wallet_standard::SolanaSignTransactionProps;
 use wasm_client_solana::LOCALNET;
 use wasm_client_solana::SolanaRpcClient;
 
-#[test(tokio::test)]
+#[test(tokio::test(flavor = "multi_thread"))]
 async fn sign_transaction() -> Result<()> {
 	let runner = create_runner().await;
 	let keypair = get_wallet_keypair();
@@ -48,7 +48,7 @@ async fn sign_transaction() -> Result<()> {
 	Ok(())
 }
 
-#[test(tokio::test)]
+#[test(tokio::test(flavor = "multi_thread"))]
 async fn sign_and_send_transaction() -> Result<()> {
 	let runner = create_runner().await;
 	let keypair = get_wallet_keypair();

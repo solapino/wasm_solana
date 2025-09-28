@@ -15,7 +15,7 @@ use tokio::time::timeout;
 use wasm_client_solana::rpc_config::LogsSubscribeRequest;
 use wasm_client_solana::rpc_config::RpcTransactionLogsFilter;
 
-#[test_log::test(tokio::test)]
+#[test_log::test(tokio::test(flavor = "multi_thread"))]
 async fn log_stream_subscription() -> anyhow::Result<()> {
 	let runner = create_runner().await;
 	let rpc = runner.rpc().clone();
@@ -40,7 +40,7 @@ async fn log_stream_subscription() -> anyhow::Result<()> {
 	Ok(())
 }
 
-#[test_log::test(tokio::test)]
+#[test_log::test(tokio::test(flavor = "multi_thread"))]
 async fn account_stream_subscription() -> anyhow::Result<()> {
 	let runner = create_runner().await;
 	let rpc = runner.rpc().clone();

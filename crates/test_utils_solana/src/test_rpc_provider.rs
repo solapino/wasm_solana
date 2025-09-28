@@ -37,7 +37,6 @@ use wasm_client_solana::SimulateTransactionResponse;
 use wasm_client_solana::SimulateTransactionResponseValue;
 use wasm_client_solana::SolanaRpcClient;
 use wasm_client_solana::rpc_response::RpcBlockhash;
-use wasm_client_solana::solana_account_decoder::UiAccount;
 use wasm_client_solana::solana_account_decoder::UiAccountEncoding;
 use wasm_client_solana::solana_account_decoder::encode_ui_account;
 use wasm_client_solana::solana_transaction_status::TransactionConfirmationStatus;
@@ -185,7 +184,7 @@ impl RpcProvider for TestRpcProvider {
 								maybe_status.map(|status| {
 									TransactionStatus {
 										slot: status.slot,
-										confirmations: status.confirmations.map(|v| v as usize),
+										confirmations: status.confirmations,
 										status: Ok(()), // legacy field
 										err: status.err,
 										confirmation_status: status.confirmation_status.map(|v| {

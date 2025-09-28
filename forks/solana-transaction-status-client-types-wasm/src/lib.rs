@@ -111,7 +111,9 @@ pub enum TransactionConfirmationStatus {
 #[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct UiConfirmedBlock {
+	#[serde_as(as = "DisplayFromStr")]
 	pub previous_blockhash: Hash,
+	#[serde_as(as = "DisplayFromStr")]
 	pub blockhash: Hash,
 	pub parent_slot: u64,
 	pub transactions: Option<Vec<EncodedTransactionWithStatusMeta>>,

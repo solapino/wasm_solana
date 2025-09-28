@@ -5,11 +5,11 @@ authors = { workspace = true }
 categories = ["wasm"]
 edition = { workspace = true }
 homepage = { workspace = true }
+keywords = ["solana", "wallet", "web3", "blockchain"]
 license = { workspace = true }
 readme = "readme.md"
 repository = { workspace = true }
 rust-version = { workspace = true }
-tags = ["solana", "wallet", "web3", "blockchain"]
 description = "A memory based wallet standard implementation primarily used for testing."
 
 [dependencies]
@@ -33,7 +33,7 @@ test-log = { workspace = true, features = ["trace"] }
 test_utils_insta = { workspace = true }
 test_utils_keypairs = { workspace = true }
 test_utils_solana = { path = "../test_utils_solana", features = ["test_validator"] }
-tokio = { workspace = true, features = ["test-util"] }
+tokio = { workspace = true, features = ["test-util", "full"] }
 
 [features]
 default = []

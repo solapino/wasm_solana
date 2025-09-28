@@ -12,7 +12,6 @@ use anyhow::Result;
 use crossbeam_channel::unbounded;
 use port_check::is_local_ipv4_port_free;
 use rand::Rng;
-use send_wrapper::SendWrapper;
 use solana_faucet::faucet::run_local_faucet_with_port;
 use solana_program::epoch_schedule::EpochSchedule;
 use solana_rpc::rpc::JsonRpcConfig;
@@ -31,7 +30,7 @@ use solana_test_validator::UpgradeableProgramInfo;
 use typed_builder::TypedBuilder;
 use wasm_client_solana::SolanaRpcClient;
 
-#[derive(Clone, TypedBuilder)]
+#[derive(Debug, Clone, TypedBuilder)]
 pub struct TestValidatorRunnerProps {
 	/// The ports to use for this runner. Defaults to all three ports being
 	/// random. Can be overriden.
@@ -86,7 +85,6 @@ impl TestValidatorRunnerProps {
 	/// 	let runner = TestValidatorRunnerProps::builder()
 	/// 		.pubkeys(vec![user])
 	/// 		.initial_lamports(sol_to_lamports(2.0))
-	/// 		.namespace("custom")
 	/// 		.build()
 	/// 		.run()
 	/// 		.await;
@@ -97,7 +95,7 @@ impl TestValidatorRunnerProps {
 	}
 }
 
-#[derive(Clone, TypedBuilder)]
+#[derive(Debug, Clone, TypedBuilder)]
 pub struct TestProgramInfo {
 	pub program_id: Pubkey,
 	#[builder(setter(into))]
@@ -126,7 +124,7 @@ impl From<TestProgramInfo> for UpgradeableProgramInfo {
 	}
 }
 
-#[derive(Copy, Clone, TypedBuilder)]
+#[derive(Debug, Copy, Clone, TypedBuilder)]
 pub struct TestValidatorPorts {
 	#[builder(default = 8899)]
 	pub rpc: u16,
@@ -134,6 +132,8 @@ pub struct TestValidatorPorts {
 	pub pubsub: u16,
 	#[builder(default = 9900)]
 	pub faucet: u16,
+	#[builder(default = (8001, 8021))]
+	pub gossip_range: (u16, u16),
 }
 
 impl Default for TestValidatorPorts {
@@ -144,11 +144,12 @@ impl Default for TestValidatorPorts {
 
 impl TestValidatorPorts {
 	pub fn try_random_ports() -> Option<Self> {
-		find_ports().map(|(rpc, pubsub, faucet)| {
+		find_ports().map(|(rpc, pubsub, faucet, gossip_range)| {
 			Self {
 				rpc,
 				pubsub,
 				faucet,
+				gossip_range,
 			}
 		})
 	}
@@ -196,6 +197,10 @@ impl TestValidatorRunner {
 		mark_port_used(ports.pubsub);
 		mark_port_used(ports.faucet);
 
+		for port in ports.gossip_range.0..=ports.gossip_range.1 {
+			mark_port_used(port);
+		}
+
 		let (sender, receiver) = unbounded();
 		let faucet_addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::LOCALHOST), ports.faucet);
 		// run the faucet in a seperate thread
@@ -215,6 +220,8 @@ impl TestValidatorRunner {
 
 		genesis
 			.rpc_port(ports.rpc)
+			.gossip_port(ports.gossip_range.0)
+			.port_range(ports.gossip_range)
 			.rpc_config(JsonRpcConfig {
 				faucet_addr: Some(faucet_addr),
 				enable_rpc_transaction_history: true,
@@ -232,8 +239,7 @@ impl TestValidatorRunner {
 			.add_accounts(funded_accounts)
 			.add_accounts(accounts);
 
-		let wrapped_future = SendWrapper::new(genesis.start_async());
-		let (validator, mint_keypair) = wrapped_future.await;
+		let (validator, mint_keypair) = genesis.start_async().await;
 
 		let rpc = SolanaRpcClient::new_with_ws_and_commitment(
 			&validator.rpc_url(),
@@ -306,6 +312,10 @@ impl Drop for TestValidatorRunner {
 		free_port(self.ports.rpc);
 		free_port(self.ports.pubsub);
 		free_port(self.ports.faucet);
+
+		for port in self.ports.gossip_range.0..=self.ports.gossip_range.1 {
+			free_port(port);
+		}
 	}
 }
 
@@ -328,17 +338,23 @@ fn free_port(port: u16) {
 	used_ports.remove(&port);
 }
 
-fn find_ports() -> Option<(u16, u16, u16)> {
+fn find_ports() -> Option<(u16, u16, u16, (u16, u16))> {
 	let mut rng = rand::rng();
-	let max = u16::MAX - 2;
+	let max = u16::MAX - 25;
 	let mut attempts = 100;
 
 	loop {
 		attempts -= 1;
 		let port: u16 = rng.random_range(1000..max);
-		let ports = (port, port + 1, port + 2);
+		let range_start = port + 3;
+		let range_end = range_start + 20;
+		let ports = (port, port + 1, port + 2, (range_start, range_end));
 
-		if is_port_available(ports.0) && is_port_available(ports.1) && is_port_available(ports.2) {
+		if is_port_available(ports.0)
+			&& is_port_available(ports.1)
+			&& is_port_available(ports.2)
+			&& (range_start..=range_end).all(is_port_available)
+		{
 			return Some(ports);
 		}
 

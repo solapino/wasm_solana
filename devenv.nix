@@ -15,7 +15,8 @@
       chromedriver
       curl
       dprint
-      geckodriver
+      eget
+      # geckodriver
       jq
       nixfmt-rfc-style
       openssl
@@ -46,6 +47,7 @@
 
   # disable dotenv since it breaks the variable interpolation supported by `direnv`
   dotenv.disableHint = true;
+
   tasks = {
     "rustfmt:nightly" = {
       exec = ''
@@ -156,9 +158,8 @@
         cargo test_memory_wallet_docs
         cargo test_wasm_client_solana_ssr
         cargo test_wasm_client_solana_docs
-        echo -e "\033[0;31mWARNING: 'cargo test_streams' is currently disabled. Remember to re-enable it when the bug is resolved!\033[0m"
-        # # Ignore for now until bugs become obvious
-        # cargo test_streams
+        # echo -e "\033[0;31mWARNING: 'cargo test_streams' is currently disabled. Remember to re-enable it when the bug is resolved!\033[0m"
+        cargo test_streams
         cargo test_example_client
         test:validator
       '';
@@ -177,7 +178,6 @@
         trap cleanup EXIT
 
         export WASM_BINDGEN_TEST_TIMEOUT=90
-        RUSTFLAGS='--cfg getrandom_backend="wasm_js"'
 
         cargo bin wait-for-them -t 10000 127.0.0.1:8899
         sleep 5

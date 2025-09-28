@@ -117,7 +117,7 @@ fn make_ui_partially_decoded_instruction(
 		accounts: instruction
 			.accounts
 			.iter()
-			.map(|&i| Pubkey::from(account_keys[i as usize]))
+			.map(|&i| account_keys[i as usize])
 			.collect(),
 		data: bs58::encode(instruction.data.clone()).into_string(),
 		stack_height,
@@ -197,17 +197,11 @@ fn build_simple_ui_transaction_status_meta(
 		log_messages: None,
 		pre_token_balances: meta
 			.pre_token_balances
-			.map(|balance| balance.into_iter().map(Into::into).collect())
-			.into(),
+			.map(|balance| balance.into_iter().collect()),
 		post_token_balances: meta
 			.post_token_balances
-			.map(|balance| balance.into_iter().map(Into::into).collect())
-			.into(),
-		rewards: if show_rewards {
-			meta.rewards.into()
-		} else {
-			None
-		},
+			.map(|balance| balance.into_iter().collect()),
+		rewards: if show_rewards { meta.rewards } else { None },
 		loaded_addresses: None,
 		return_data: None,
 		compute_units_consumed: None,
@@ -227,24 +221,19 @@ fn parse_ui_transaction_status_meta(
 		fee: meta.fee,
 		pre_balances: meta.pre_balances,
 		post_balances: meta.post_balances,
-		inner_instructions: meta
-			.inner_instructions
-			.map(|ixs| {
-				ixs.into_iter()
-					.map(|ix| parse_ui_inner_instructions(ix, &account_keys))
-					.collect()
-			})
-			.into(),
-		log_messages: meta.log_messages.into(),
+		inner_instructions: meta.inner_instructions.map(|ixs| {
+			ixs.into_iter()
+				.map(|ix| parse_ui_inner_instructions(ix, &account_keys))
+				.collect()
+		}),
+		log_messages: meta.log_messages,
 		pre_token_balances: meta
 			.pre_token_balances
-			.map(|balance| balance.into_iter().map(Into::into).collect())
-			.into(),
+			.map(|balance| balance.into_iter().collect()),
 		post_token_balances: meta
 			.post_token_balances
-			.map(|balance| balance.into_iter().map(Into::into).collect())
-			.into(),
-		rewards: if show_rewards { meta.rewards } else { None }.into(),
+			.map(|balance| balance.into_iter().collect()),
+		rewards: if show_rewards { meta.rewards } else { None },
 		loaded_addresses: None,
 		return_data: meta.return_data.map(|return_data| return_data.into()),
 		compute_units_consumed: meta.compute_units_consumed,

@@ -58,7 +58,7 @@ impl From<AddressLookupTable<'_>> for UiLookupTable {
 			addresses: address_lookup_table
 				.addresses
 				.iter()
-				.map(|address| address.to_string())
+				.map(ToString::to_string)
 				.collect(),
 		}
 	}
