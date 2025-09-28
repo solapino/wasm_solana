@@ -4,9 +4,6 @@ inputs:
   github-token:
     description: Provide a github token
     required: true
-  cachix-token:
-    description: Provide the cachix auth token
-    required: true
   cache-version:
     description: The version of the cache to use.
     required: false
@@ -15,12 +12,11 @@ inputs:
 runs:
   using: composite
   steps:
-    # - name: free disk space (ubuntu)
-    #   uses: jlumbroso/free-disk-space@v1.3.1
-    #   with:
-    #     # this might remove tools that are actually needed,
-    #     # if set to "true" but frees about 6 GB
-    #     tool-cache: true
+    - name: free disk space (ubuntu)
+      uses: jlumbroso/free-disk-space@v1.3.1
+      with:
+        tool-cache: true
+
     - name: install nix
       uses: cachix/install-nix-action@v31
       with:
@@ -30,10 +26,9 @@ runs:
       uses: cachix/cachix-action@v16
       with:
         name: devenv
-        # authToken: ${{ inputs.cachix-token }}
 
     - name: install devenv.sh
-      run: nix profile install nixpkgs#devenv
+      run: nix profile add nixpkgs#devenv
       shell: bash
 
     - name: build developer environment

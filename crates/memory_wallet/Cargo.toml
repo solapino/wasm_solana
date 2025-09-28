@@ -13,27 +13,27 @@ rust-version = { workspace = true }
 description = "A memory based wallet standard implementation primarily used for testing."
 
 [dependencies]
-async-trait = { workspace = true }
-derive_more = { workspace = true, features = ["deref", "deref_mut", "from", "into"] }
-futures = { workspace = true }
-indexmap = { workspace = true }
-log = { workspace = true }
-nacl = { workspace = true }
-serde = { workspace = true, features = ["derive"] }
-solana-program = { workspace = true }
-solana-sdk = { workspace = true }
-typed-builder = { workspace = true }
-wallet_standard = { workspace = true, features = ["solana"] }
+async-trait = { workspace = true, default-features = true }
+derive_more = { workspace = true, features = ["deref", "deref_mut", "from", "into"], default-features = true }
+futures = { workspace = true, default-features = true }
+indexmap = { workspace = true, default-features = true }
+log = { workspace = true, default-features = true }
+nacl = { workspace = true, default-features = true }
+serde = { workspace = true, features = ["derive"], default-features = true }
+solana-program = { workspace = true, default-features = true }
+solana-sdk = { workspace = true, default-features = true }
+typed-builder = { workspace = true, default-features = true }
+wallet_standard = { workspace = true, features = ["solana"], default-features = true }
 wasm_client_solana = { workspace = true }
 
 [dev-dependencies]
-anyhow = { workspace = true }
-assert2 = { workspace = true }
-test-log = { workspace = true, features = ["trace"] }
+anyhow = { workspace = true, default-features = true }
+assert2 = { workspace = true, default-features = true }
+test-log = { workspace = true, features = ["trace"], default-features = true }
 test_utils_insta = { workspace = true }
 test_utils_keypairs = { workspace = true }
 test_utils_solana = { path = "../test_utils_solana", features = ["test_validator"] }
-tokio = { workspace = true, features = ["test-util", "full"] }
+tokio = { workspace = true, features = ["test-util", "full"], default-features = true }
 
 [features]
 default = []

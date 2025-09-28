@@ -2160,7 +2160,7 @@ dependencies = [
  "test_utils_keypairs",
  "test_utils_solana",
  "tokio",
- "typed-builder 0.21.2",
+ "typed-builder 0.22.0",
  "wallet_standard",
  "wasm_client_anchor",
  "wasm_client_solana",
@@ -3843,7 +3843,7 @@ dependencies = [
  "test_utils_keypairs",
  "test_utils_solana",
  "tokio",
- "typed-builder 0.21.2",
+ "typed-builder 0.22.0",
  "wallet_standard",
  "wasm_client_solana",
 ]
@@ -5345,7 +5345,7 @@ dependencies = [
  "openssl-probe",
  "rustls-pki-types",
  "schannel",
- "security-framework 3.5.0",
+ "security-framework 3.5.1",
 ]
 
 [[package]]
@@ -5382,7 +5382,7 @@ dependencies = [
  "rustls-native-certs",
  "rustls-platform-verifier-android",
  "rustls-webpki 0.103.6",
- "security-framework 3.5.0",
+ "security-framework 3.5.1",
  "security-framework-sys",
  "webpki-root-certs",
  "windows-sys 0.59.0",
@@ -5500,9 +5500,9 @@ dependencies = [
 
 [[package]]
 name = "security-framework"
-version = "3.5.0"
+version = "3.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cc198e42d9b7510827939c9a15f5062a0c913f3371d765977e586d2fe6c16f4a"
+checksum = "b3297343eaf830f66ede390ea39da1d462b6b0c1b000f420d0a83f898bbbe6ef"
 dependencies = [
  "bitflags 2.9.4",
  "core-foundation 0.10.1",
@@ -6001,7 +6001,7 @@ dependencies = [
  "serde_with",
  "solana-account",
  "solana-pubkey",
- "typed-builder 0.21.2",
+ "typed-builder 0.22.0",
  "zstd",
 ]
 
@@ -10917,7 +10917,7 @@ dependencies = [
  "test_utils_insta",
  "test_utils_keypairs",
  "tokio",
- "typed-builder 0.21.2",
+ "typed-builder 0.22.0",
  "wallet_standard",
  "wasm_client_solana",
 ]
@@ -11570,11 +11570,11 @@ dependencies = [
 
 [[package]]
 name = "typed-builder"
-version = "0.21.2"
+version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fef81aec2ca29576f9f6ae8755108640d0a86dd3161b2e8bca6cfa554e98f77d"
+checksum = "398a3a3c918c96de527dc11e6e846cd549d4508030b8a33e1da12789c856b81a"
 dependencies = [
- "typed-builder-macro 0.21.2",
+ "typed-builder-macro 0.22.0",
 ]
 
 [[package]]
@@ -11590,9 +11590,9 @@ dependencies = [
 
 [[package]]
 name = "typed-builder-macro"
-version = "0.21.2"
+version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1ecb9ecf7799210407c14a8cfdfe0173365780968dc57973ed082211958e0b18"
+checksum = "0e48cea23f68d1f78eb7bc092881b6bb88d3d6b5b7e6234f6f9c911da1ffb221"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -11974,7 +11974,7 @@ dependencies = [
  "test-log",
  "thiserror 2.0.16",
  "tokio",
- "typed-builder 0.21.2",
+ "typed-builder 0.22.0",
  "wallet_standard",
  "wasm_client_solana",
 ]
@@ -12034,7 +12034,7 @@ dependencies = [
  "test_utils_keypairs",
  "thiserror 2.0.16",
  "tokio",
- "typed-builder 0.21.2",
+ "typed-builder 0.22.0",
  "wallet_standard",
  "wasm-bindgen",
  "wasm-bindgen-futures",

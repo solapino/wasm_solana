@@ -11,137 +11,109 @@ repository = "https://github.com/ifiokjr/wasm_solana"
 rust-version = "1.85.0"
 
 [workspace.dependencies]
-Inflector = "0.11"
-agave-reserved-account-keys = "2"
-anchor-lang = "0.31"
-anchor-spl = "0.31"
-anyhow = "1"
-assert2 = "0.3"
-assert_matches = "1"
-async-trait = "0.1"
-base64 = "0.22"
-bencher = "0.1"
-bincode = "1"
-borsh = "1"
-bs58 = "0.5"
-bv = "0.11"
-bytemuck = "1"
-cfg-if = "1"
-chrono-humanize = "0.2"
-crossbeam-channel = "0.5"
-derive_more = "2"
-fork_stream = "0.1"
-futures = "0.3"
-futures-timeout = "0.1"
-futures-timer = "3"
-gloo-net = "0.6"
-heck = "0.5"
-indexmap = "2"
-insta = "1"
-js-sys = "0.3"
-log = "0.4"
-nacl = "0.5"
-paste = "1"
-pin-project = "1"
-port_check = "0.3"
-rand = "0.9"
-regex = "1"
-reqwest = "0.12"
-reqwest-websocket = "0.5"
-semver = "1"
-send_wrapper = "0.6"
-serde = "1"
-serde-wasm-bindgen = "0.6"
-serde_bytes = "0.11"
-serde_derive = "1" # must match the serde version, see https://github.com/serde-rs/serde/issues/2584#issuecomment-1685252251
-serde_json = "1"
-serde_tuple = "1"
-serde_with = "3"
-solana-account = "2"
-solana-account-decoder = "2"
-solana-account-decoder-client-types = "2"
-solana-address-lookup-table-interface = "2"
-solana-banks-client = "2"
-solana-banks-interface = "2"
-solana-bpf-loader-program = "2"
-solana-bucket-map = "2"
-solana-builtins = "2"
-solana-builtins-default-costs = "2"
-solana-clap-utils = "2"
-solana-clap-v3-utils = "2"
-solana-cli = "2"
-solana-cli-config = "2"
-solana-cli-output = "2"
-solana-client = "2"
-solana-clock = "2"
-solana-commitment-config = "2"
-solana-config-interface = "2"
-solana-config-program-client = "1"
-solana-epoch-schedule = "2"
-solana-faucet = "2"
-solana-fee-calculator = "2"
-solana-hash = "2"
-solana-instruction = "2"
-solana-keypair = "2"
-solana-loader-v2-interface = "2"
-solana-loader-v3-interface = "5"
-solana-logger = "2"
-solana-message = "2.4"
-solana-metrics = "2"
-solana-nonce = "2"
-solana-packet = "2"
-solana-program = "2"
-solana-program-option = "2"
-solana-program-pack = "2"
-solana-program-runtime = "2"
-solana-program-test = "2"
+Inflector = { default-features = false, version = "^0.11" }
+agave-reserved-account-keys = { default-features = false, version = "^2" }
+anchor-lang = { default-features = false, version = "^0.31" }
+anyhow = { default-features = false, version = "^1" }
+assert2 = { default-features = false, version = "^0.3" }
+assert_matches = { default-features = false, version = "^1" }
+async-trait = { default-features = false, version = "^0.1" }
+base64 = { default-features = false, version = "^0.22" }
+bincode = { default-features = false, version = "^1" }
+borsh = { default-features = false, version = "^1" }
+bs58 = { default-features = false, version = "^0.5" }
+bv = { default-features = false, version = "^0.11" }
+bytemuck = { default-features = false, version = "^1" }
+cfg-if = { default-features = false, version = "^1" }
+chrono-humanize = { default-features = false, version = "^0.2" }
+crossbeam-channel = { default-features = false, version = "^0.5" }
+derive_more = { default-features = false, version = "^2" }
+fork_stream = { default-features = false, version = "^0.1" }
+futures = { default-features = false, version = "^0.3" }
+futures-timeout = { default-features = false, version = "^0.1" }
+futures-timer = { default-features = false, version = "^3" }
+gloo-net = { default-features = false, version = "^0.6" }
+heck = { default-features = false, version = "^0.5" }
+indexmap = { default-features = false, version = "^2" }
+insta = { default-features = false, version = "^1" }
+js-sys = { default-features = false, version = "^0.3" }
+log = { default-features = false, version = "^0.4" }
+nacl = { default-features = false, version = "^0.5" }
+paste = { default-features = false, version = "^1" }
+pin-project = { default-features = false, version = "^1" }
+port_check = { default-features = false, version = "^0.3" }
+rand = { default-features = false, version = "^0.9" }
+regex = { default-features = false, version = "^1" }
+reqwest = { default-features = false, version = "^0.12" }
+reqwest-websocket = { default-features = false, version = "^0.5" }
+semver = { default-features = false, version = "^1" }
+send_wrapper = { default-features = false, version = "^0.6" }
+serde = { default-features = false, version = "^1" }
+serde-wasm-bindgen = { default-features = false, version = "^0.6" }
+serde_bytes = { default-features = false, version = "^0.11" }
+serde_derive = { default-features = false, version = "^1" }
+serde_json = { default-features = false, version = "^1" }
+serde_tuple = { default-features = false, version = "^1" }
+serde_with = { default-features = false, version = "^3" }
+solana-account = { default-features = false, version = "^2" }
+solana-address-lookup-table-interface = { default-features = false, version = "^2" }
+solana-banks-client = { default-features = false, version = "^2" }
+solana-banks-interface = { default-features = false, version = "^2" }
+solana-clock = { default-features = false, version = "^2" }
+solana-commitment-config = { default-features = false, version = "^2" }
+solana-config-program-client = { default-features = false, version = "^1" }
+solana-epoch-schedule = { default-features = false, version = "^2" }
+solana-faucet = { default-features = false, version = "^2" }
+solana-fee-calculator = { default-features = false, version = "^2" }
+solana-hash = { default-features = false, version = "^2" }
+solana-instruction = { default-features = false, version = "^2" }
+solana-loader-v2-interface = { default-features = false, version = "^2" }
+solana-loader-v3-interface = { default-features = false, version = "^5" }
+solana-message = { default-features = false, version = "^2.4" }
+solana-nonce = { default-features = false, version = "^2" }
+solana-program = { default-features = false, version = "^2" }
+solana-program-option = { default-features = false, version = "^2" }
+solana-program-pack = { default-features = false, version = "^2" }
+solana-program-runtime = { default-features = false, version = "^2" }
+solana-program-test = { default-features = false, version = "^2" }
 solana-pubkey = { version = "2", default-features = false }
-solana-rent = "2"
-solana-reward-info = "2"
-solana-rpc = "2"
-solana-sdk = "2"
-solana-sdk-ids = "2"
+solana-rent = { default-features = false, version = "^2" }
+solana-reward-info = { default-features = false, version = "^2" }
+solana-rpc = { default-features = false, version = "^2" }
+solana-sdk = { default-features = false, version = "^2" }
+solana-sdk-ids = { default-features = false, version = "^2" }
 solana-signature = { version = "2", default-features = false }
-solana-signer = "2"
-solana-sk-sdk = "2"
-solana-slot-hashes = "2"
-solana-slot-history = "2"
-solana-stake-interface = "1"
-solana-system-interface = "1"
-solana-system-transaction = "2"
-solana-sysvar = "2"
-solana-test-validator = "2"
-solana-transaction = "2"
-solana-transaction-context = "2"
-solana-transaction-error = "2"
-solana-transaction-status-client-types = "2"
-solana-version = "2"
-solana-vote-interface = "2"
-solana-zk-token-sdk = "2"
-spl-associated-token-account = "7"
-spl-associated-token-account-interface = "1"
-spl-generic-token = "1"
-spl-memo = "6"
-spl-memo-interface = "1"
-spl-pod = "0.5"
-spl-token = "8"
-spl-token-2022 = "9"
-spl-token-2022-interface = "1"
-spl-token-confidential-transfer-proof-extraction = "0.4"
-spl-token-group-interface = "0.6"
-spl-token-interface = "1"
-spl-token-metadata-interface = "0.7"
-tarpc = "0.29"
-test-log = "0.2"
-thiserror = "2"
-tokio = "1"
-typed-builder = "0.21"
-wallet_standard = "0.4"
-wallet_standard_browser = "0.4"
-wasm-bindgen = "0.2"
-wasm-bindgen-futures = "0.4"
-wasm-bindgen-test = "0.3"
-web-sys = "0.3"
+solana-slot-hashes = { default-features = false, version = "^2" }
+solana-slot-history = { default-features = false, version = "^2" }
+solana-stake-interface = { default-features = false, version = "^1" }
+solana-system-interface = { default-features = false, version = "^1" }
+solana-sysvar = { default-features = false, version = "^2" }
+solana-test-validator = { default-features = false, version = "^2" }
+solana-transaction = { default-features = false, version = "^2" }
+solana-transaction-context = { default-features = false, version = "^2" }
+solana-transaction-error = { default-features = false, version = "^2" }
+solana-version = { default-features = false, version = "^2" }
+solana-vote-interface = { default-features = false, version = "^2" }
+solana-zk-token-sdk = { default-features = false, version = "^2" }
+spl-associated-token-account = { default-features = false, version = "^7" }
+spl-generic-token = { default-features = false, version = "^1" }
+spl-memo = { default-features = false, version = "^6" }
+spl-pod = { default-features = false, version = "^0.5" }
+spl-token = { default-features = false, version = "^8" }
+spl-token-2022 = { default-features = false, version = "^9" }
+spl-token-confidential-transfer-proof-extraction = { default-features = false, version = "^0.4" }
+spl-token-group-interface = { default-features = false, version = "^0.6" }
+spl-token-metadata-interface = { default-features = false, version = "^0.7" }
+tarpc = { default-features = false, version = "^0.29" }
+test-log = { default-features = false, version = "^0.2" }
+thiserror = { default-features = false, version = "^2" }
+tokio = { default-features = false, version = "^1" }
+typed-builder = { default-features = false, version = "^0.22" }
+wallet_standard = { default-features = false, version = "^0.4" }
+wasm-bindgen = { default-features = false, version = "^0.2" }
+wasm-bindgen-futures = { default-features = false, version = "^0.4" }
+wasm-bindgen-test = { default-features = false, version = "^0.3" }
+web-sys = { default-features = false, version = "^0.3" }
 zstd = { version = "0.13", default-features = false }
 
 # internal crates
@@ -158,22 +130,19 @@ wasm_client_anchor = { path = "crates/wasm_client_anchor", version = "0.8.1" }
 wasm_client_solana = { path = "crates/wasm_client_solana", version = "0.8.0" }
 
 # forks
+async-tungstenite = { default-features = false, version = "^0.28.1" }
+getrandom = { default-features = false, version = "^0.3" }
 solana-account-decoder-client-types-wasm = { path = "forks/solana-account-decoder-client-types-wasm", version = "2.3.10" }
 solana-account-decoder-wasm = { path = "forks/solana-account-decoder-wasm", version = "2.3.10" }
 solana-transaction-status-client-types-wasm = { path = "forks/solana-transaction-status-client-types-wasm", version = "2.3.10" }
 solana-transaction-status-wasm = { path = "forks/solana-transaction-status-wasm", version = "2.3.10" }
 
 [workspace.metadata.bin]
-anchor-cli = { version = "0.31.1", bins = ["anchor"] }
-cargo-easy-dep = { version = "0.1.1" }
 cargo-insta = { version = "1.43.2" }
-cargo-interactive-update = { version = "0.6.2" }
 cargo-llvm-cov = { version = "0.6.19" }
 cargo-nextest = { version = "0.9.104" }
-cargo-semver-checks = { version = "0.44.0" }
-release-plz = { version = "0.3.147", bins = ["release-plz"] }
 wait-for-them = { version = "0.5.1", bins = ["wait-for-them"] }
-wasm-bindgen-cli = { version = "0.2.103", bins = ["wasm-bindgen", "wasm-bindgen-test-runner"] }
+wasm-bindgen-cli = { version = "0.2.104", bins = ["wasm-bindgen", "wasm-bindgen-test-runner"] }
 
 [profile.dev.package]
 insta.opt-level = 3

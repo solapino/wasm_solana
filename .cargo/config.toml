@@ -6,7 +6,6 @@ insta = ["bin", "cargo-insta"]
 llvm-cov = ["bin", "cargo-llvm-cov"]
 nextest = ["bin", "cargo-nextest"]
 semver-checks = ["bin", "cargo-semver-checks"]
-easy-dep = ["bin", "cargo-easy-dep"]
 interactive-update = ["bin", "cargo-interactive-update"]
 
 test_wasm = [

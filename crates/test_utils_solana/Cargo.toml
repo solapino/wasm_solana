@@ -14,44 +14,44 @@ description = "Utilities and extensions for testing solana in wasm compatible en
 workspace = true
 
 [dependencies]
-anyhow = { workspace = true }
-assert2 = { workspace = true }
-async-trait = { workspace = true }
-bincode = { workspace = true }
-borsh = { workspace = true, features = ["derive"] }
-chrono-humanize = { workspace = true }
-crossbeam-channel = { workspace = true }
-derive_more = { workspace = true, features = ["deref", "deref_mut"] }
-futures = { workspace = true }
-log = { workspace = true }
-port_check = { workspace = true }
-rand = { workspace = true }
-send_wrapper = { workspace = true, features = ["futures"] }
-serde = { workspace = true, features = ["derive"] }
-serde_json = { workspace = true }
-solana-banks-client = { workspace = true }
-solana-banks-interface = { workspace = true }
-solana-faucet = { workspace = true, optional = true }
-solana-program = { workspace = true }
-solana-program-runtime = { workspace = true }
-solana-program-test = { workspace = true }
-solana-rpc = { workspace = true }
-solana-sdk = { workspace = true }
-solana-test-validator = { workspace = true, optional = true }
-spl-associated-token-account = { workspace = true }
-spl-token-2022 = { workspace = true }
-tarpc = { workspace = true }
-typed-builder = { workspace = true }
-wallet_standard = { workspace = true, features = ["solana"] }
+anyhow = { workspace = true, default-features = true }
+assert2 = { workspace = true, default-features = true }
+async-trait = { workspace = true, default-features = true }
+bincode = { workspace = true, default-features = true }
+borsh = { workspace = true, features = ["derive"], default-features = true }
+chrono-humanize = { workspace = true, default-features = true }
+crossbeam-channel = { workspace = true, default-features = true }
+derive_more = { workspace = true, features = ["deref", "deref_mut"], default-features = true }
+futures = { workspace = true, default-features = true }
+log = { workspace = true, default-features = true }
+port_check = { workspace = true, default-features = true }
+rand = { workspace = true, default-features = true }
+send_wrapper = { workspace = true, features = ["futures"], default-features = true }
+serde = { workspace = true, features = ["derive"], default-features = true }
+serde_json = { workspace = true, default-features = true }
+solana-banks-client = { workspace = true, default-features = true }
+solana-banks-interface = { workspace = true, default-features = true }
+solana-faucet = { workspace = true, optional = true, default-features = true }
+solana-program = { workspace = true, default-features = true }
+solana-program-runtime = { workspace = true, default-features = true }
+solana-program-test = { workspace = true, default-features = true }
+solana-rpc = { workspace = true, default-features = true }
+solana-sdk = { workspace = true, default-features = true }
+solana-test-validator = { workspace = true, optional = true, default-features = true }
+spl-associated-token-account = { workspace = true, default-features = true }
+spl-token-2022 = { workspace = true, default-features = true }
+tarpc = { workspace = true, default-features = true }
+typed-builder = { workspace = true, default-features = true }
+wallet_standard = { workspace = true, features = ["solana"], default-features = true }
 wasm_client_solana = { workspace = true, features = ["ssr"] }
 
 [dev-dependencies]
-assert2 = { workspace = true }
-insta = { workspace = true, features = ["redactions", "json"] }
-test-log = { workspace = true, features = ["trace"] }
+assert2 = { workspace = true, default-features = true }
+insta = { workspace = true, features = ["redactions", "json"], default-features = true }
+test-log = { workspace = true, features = ["trace"], default-features = true }
 test_utils_insta = { workspace = true }
 test_utils_keypairs = { workspace = true }
-tokio = { workspace = true, features = ["test-util", "time", "full"] }
+tokio = { workspace = true, features = ["test-util", "time", "full"], default-features = true }
 
 [features]
 test_validator = ["dep:solana-faucet", "dep:solana-test-validator"]

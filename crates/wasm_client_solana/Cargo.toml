@@ -19,69 +19,69 @@ workspace = true
 crate-type = ["cdylib", "lib"]
 
 [dependencies]
-async-trait = { workspace = true }
-async-tungstenite = { version = "0.28.1", features = ["futures-03-sink"] }
-base64 = { workspace = true }
-bincode = { workspace = true }
-bs58 = { workspace = true }
-bv = { workspace = true, features = ["serde"] }
-cfg-if = { workspace = true }
-derive_more = { workspace = true, features = ["debug", "deref", "deref_mut", "into", "into_iterator", "from"] }
-fork_stream = { workspace = true }
-futures = { workspace = true }
-futures-timer = { workspace = true }
-gloo-net = { workspace = true, features = ["websocket"] }
-heck = { workspace = true }
-js-sys = { workspace = true }
-log = { workspace = true }
-pin-project = { workspace = true }
-reqwest = { workspace = true, optional = true, features = ["json"] }
-reqwest-websocket = { workspace = true, optional = true, features = ["json"] }
-semver = { workspace = true }
-send_wrapper = { workspace = true, features = ["futures"] }
-serde = { workspace = true, features = ["derive"] }
-serde-wasm-bindgen = { workspace = true }
-serde_bytes = { workspace = true }
-serde_json = { workspace = true }
-serde_tuple = { workspace = true }
-serde_with = { workspace = true }
+async-trait = { workspace = true, default-features = true }
+async-tungstenite = { features = ["futures-03-sink"], workspace = true, default-features = true }
+base64 = { workspace = true, default-features = true }
+bincode = { workspace = true, default-features = true }
+bs58 = { workspace = true, default-features = true }
+bv = { workspace = true, features = ["serde"], default-features = true }
+cfg-if = { workspace = true, default-features = true }
+derive_more = { workspace = true, features = ["debug", "deref", "deref_mut", "into", "into_iterator", "from"], default-features = true }
+fork_stream = { workspace = true, default-features = true }
+futures = { workspace = true, default-features = true }
+futures-timer = { workspace = true, default-features = true }
+gloo-net = { workspace = true, features = ["websocket"], default-features = true }
+heck = { workspace = true, default-features = true }
+js-sys = { workspace = true, default-features = true }
+log = { workspace = true, default-features = true }
+pin-project = { workspace = true, default-features = true }
+reqwest = { workspace = true, optional = true, features = ["json"], default-features = true }
+reqwest-websocket = { workspace = true, optional = true, features = ["json"], default-features = true }
+semver = { workspace = true, default-features = true }
+send_wrapper = { workspace = true, features = ["futures"], default-features = true }
+serde = { workspace = true, features = ["derive"], default-features = true }
+serde-wasm-bindgen = { workspace = true, default-features = true }
+serde_bytes = { workspace = true, default-features = true }
+serde_json = { workspace = true, default-features = true }
+serde_tuple = { workspace = true, default-features = true }
+serde_with = { workspace = true, default-features = true }
 solana-account-decoder-client-types-wasm = { workspace = true }
 solana-account-decoder-wasm = { workspace = true }
-solana-program = { workspace = true }
-solana-sdk = { workspace = true }
+solana-program = { workspace = true, default-features = true }
+solana-sdk = { workspace = true, default-features = true }
 solana-transaction-status-client-types-wasm = { workspace = true }
 solana-transaction-status-wasm = { workspace = true }
-solana-version = { workspace = true }
-solana-zk-token-sdk = { workspace = true }
-spl-associated-token-account = { workspace = true, features = ["no-entrypoint"] }
-spl-memo = { workspace = true, features = ["no-entrypoint"] }
-spl-token = { workspace = true, features = ["no-entrypoint"] }
-spl-token-2022 = { workspace = true, features = ["no-entrypoint", "serde-traits"] }
-spl-token-group-interface = { workspace = true }
-spl-token-metadata-interface = { workspace = true }
-thiserror = { workspace = true }
-tokio = { workspace = true, features = ["rt"], optional = true }
-typed-builder = { workspace = true }
-wallet_standard = { workspace = true, features = ["solana"] }
-wasm-bindgen = { workspace = true }
-wasm-bindgen-futures = { workspace = true }
-web-sys = { workspace = true, features = ["console", "HtmlDocument", "Window", "AbortController", "Request", "RequestInit", "AbortSignal", "Response", "Headers"] }
-zstd = { workspace = true, optional = true }
+solana-version = { workspace = true, default-features = true }
+solana-zk-token-sdk = { workspace = true, default-features = true }
+spl-associated-token-account = { workspace = true, features = ["no-entrypoint"], default-features = true }
+spl-memo = { workspace = true, features = ["no-entrypoint"], default-features = true }
+spl-token = { workspace = true, features = ["no-entrypoint"], default-features = true }
+spl-token-2022 = { workspace = true, features = ["no-entrypoint", "serde-traits"], default-features = true }
+spl-token-group-interface = { workspace = true, default-features = true }
+spl-token-metadata-interface = { workspace = true, default-features = true }
+thiserror = { workspace = true, default-features = true }
+tokio = { workspace = true, features = ["rt"], optional = true, default-features = true }
+typed-builder = { workspace = true, default-features = true }
+wallet_standard = { workspace = true, features = ["solana"], default-features = true }
+wasm-bindgen = { workspace = true, default-features = true }
+wasm-bindgen-futures = { workspace = true, default-features = true }
+web-sys = { workspace = true, features = ["console", "HtmlDocument", "Window", "AbortController", "Request", "RequestInit", "AbortSignal", "Response", "Headers"], default-features = true }
+zstd = { workspace = true, optional = true, default-features = true }
 
 [target.'cfg(all(target_arch = "wasm32", target_os = "unknown"))'.dependencies]
 getrandom = { version = "0.3", features = ["wasm_js"] }
 
 [dev-dependencies]
-anyhow = { workspace = true }
-assert2 = { workspace = true }
-futures-timeout = { workspace = true }
-insta = { workspace = true, features = ["redactions", "json"] }
-spl-pod = { workspace = true }
-test-log = { workspace = true, features = ["trace"] }
+anyhow = { workspace = true, default-features = true }
+assert2 = { workspace = true, default-features = true }
+futures-timeout = { workspace = true, default-features = true }
+insta = { workspace = true, features = ["redactions", "json"], default-features = true }
+spl-pod = { workspace = true, default-features = true }
+test-log = { workspace = true, features = ["trace"], default-features = true }
 test_utils_insta = { workspace = true }
 test_utils_keypairs = { workspace = true }
-tokio = { workspace = true, features = ["test-util"] }
-wasm-bindgen-test = { workspace = true }
+tokio = { workspace = true, features = ["test-util"], default-features = true }
+wasm-bindgen-test = { workspace = true, default-features = true }
 
 [features]
 js = ["futures-timer/wasm-bindgen"]

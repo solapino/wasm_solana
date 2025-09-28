@@ -11,9 +11,9 @@ rust-version = { workspace = true }
 description = "Test utils to make working with `insta` redactions easier."
 
 [dependencies]
-anyhow = { workspace = true }
-assert2 = { workspace = true }
-insta = { workspace = true, features = ["redactions"] }
+anyhow = { workspace = true, default-features = true }
+assert2 = { workspace = true, default-features = true }
+insta = { workspace = true, features = ["redactions"], default-features = true }
 
 [lints]
 workspace = true

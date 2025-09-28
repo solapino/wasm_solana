@@ -14,13 +14,13 @@ description = "Utilities and extensions for testing anchor programs and clients 
 workspace = true
 
 [dependencies]
-anchor-lang = { workspace = true }
-async-trait = { workspace = true }
-solana-program = { workspace = true }
-solana-program-test = { workspace = true }
-solana-sdk = { workspace = true }
+anchor-lang = { workspace = true, default-features = true }
+async-trait = { workspace = true, default-features = true }
+solana-program = { workspace = true, default-features = true }
+solana-program-test = { workspace = true, default-features = true }
+solana-sdk = { workspace = true, default-features = true }
 test_utils_solana = { workspace = true }
-wallet_standard = { workspace = true, features = ["solana"] }
+wallet_standard = { workspace = true, features = ["solana"], default-features = true }
 wasm_client_anchor = { workspace = true, features = ["ssr"] }
 wasm_client_solana = { workspace = true, features = ["ssr"] }
 

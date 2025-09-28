@@ -10,6 +10,7 @@
     with pkgs;
     [
       binaryen
+      cargo-binstall # for faster installations
       cargo-run-bin
       chromedriver
       dprint
