@@ -5,7 +5,7 @@
   ...
 }:
 let
-  llvm = pkgs.llvmPackages_latest;
+  llvm = if pkgs.stdenv.isLinux then pkgs.pkgsLLVM else pkgs.llvmPackages_21;
 in
 
 {
@@ -24,11 +24,13 @@ in
       protobuf # needed for `solana-test-validator` in tests
       rustup
       shfmt
+      cmake
+      pkg-config
+      libiconv
       llvm.bintools
       llvm.clang-tools
     ]
     ++ lib.optionals stdenv.isDarwin [
-      libiconv
       coreutils
     ]
     ++ lib.optionals stdenv.isLinux [
@@ -38,22 +40,24 @@ in
   env = {
     EGET_CONFIG = "${config.env.DEVENV_ROOT}/.eget/.eget.toml";
     CC_LD = if pkgs.stdenv.isLinux then "lld" else null;
-    # CC = "${pkgs.gcc}/bin/gcc";
     CXX_LD = if pkgs.stdenv.isLinux then "lld" else null;
+    # CC = "${pkgs.gcc}/bin/gcc";
     # CXX = "${pkgs.gcc}/bin/g++";
-    LDFLAGS = "-L${pkgs.lib.getLib pkgs.llvmPackages_21.libllvm}/lib -L${pkgs.lib.getLib pkgs.llvmPackages_21.clang-unwrapped}/lib";
-    LIBCLANG_PATH = "${pkgs.lib.getLib pkgs.llvmPackages_21.clang-unwrapped}/lib";
-    LLVM_CONFIG_PATH = "${pkgs.llvmPackages_21.libllvm}/bin/llvm-config";
-    CPPFLAGS = "-I${pkgs.llvmPackages_21.libllvm}/include -I${pkgs.llvmPackages_21.clang-unwrapped}/include";
+    # LDFLAGS = "-L${pkgs.lib.getLib llvm.libllvm}/lib -L${pkgs.lib.getLib llvm.clang-unwrapped}/lib";
+    # LIBCLANG_PATH = "${pkgs.lib.getLib llvm.clang-unwrapped}/lib";
+    # LLVM_CONFIG_PATH = "${llvm.libllvm}/bin/llvm-config";
+    # CPPFLAGS = "-I${llvm.libllvm}/include -I${llvm.clang-unwrapped}/include";
   };
 
   # Rely on the global sdk for now as the nix apple sdk is not working for me.
   # apple.sdk = if pkgs.stdenv.isDarwin then pkgs.apple-sdk_15 else null;
   apple.sdk = null;
+  stdenv = pkgs.llvmPackages_21.stdenv;
 
   enterShell = ''
     set -e
-    export PATH="$DEVENV_ROOT/.eget/bin:$PATH"
+    export PATH="$DEVENV_ROOT/.eget/bin:$PATH";
+    export LDFLAGS="$NIX_LDFLAGS";
   '';
 
   # disable dotenv since it breaks the variable interpolation supported by `direnv`
