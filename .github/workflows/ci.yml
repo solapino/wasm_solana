@@ -26,6 +26,7 @@ jobs:
         uses: ./.github/actions/devenv
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          cachix-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - uses: clechasseur/rs-clippy-check@v4
         with:
@@ -52,6 +53,7 @@ jobs:
         uses: ./.github/actions/devenv
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          cachix-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: build docs
         run: build:docs
@@ -68,6 +70,7 @@ jobs:
         uses: ./.github/actions/devenv
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          cachix-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: test `memory_wallet` with `ssr`
         run: cargo test_memory_wallet_ssr
@@ -114,6 +117,7 @@ jobs:
         uses: ./.github/actions/devenv
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          cachix-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: coverage `memory_wallet_ssr`
         run: cargo coverage_memory_wallet_ssr
@@ -162,6 +166,7 @@ jobs:
         uses: ./.github/actions/devenv
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          cachix-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: build
         run: cargo build --locked
