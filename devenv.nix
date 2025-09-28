@@ -10,20 +10,12 @@
     with pkgs;
     [
       binaryen
-      cargo-binstall
       cargo-run-bin
       chromedriver
-      curl
       dprint
       eget
-      # geckodriver
-      jq
       nixfmt-rfc-style
-      openssl
-      protobuf # needed for `solana-test-validator` in tests
       rustup
-      shfmt
-      gcc
     ]
     ++ lib.optionals stdenv.isDarwin [
       libiconv
@@ -32,8 +24,6 @@
 
   env = {
     EGET_CONFIG = "${config.env.DEVENV_ROOT}/.eget/.eget.toml";
-    CC = "${pkgs.gcc}/bin/gcc";
-    CXX = "${pkgs.gcc}/bin/g++";
   };
 
   # Rely on the global sdk for now as the nix apple sdk is not working for me.

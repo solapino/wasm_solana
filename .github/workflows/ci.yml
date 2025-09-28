@@ -22,18 +22,10 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v4
 
-      - name: free disk space (ubuntu)
-        uses: jlumbroso/free-disk-space@v1.3.1
-        with:
-          # this might remove tools that are actually needed,
-          # if set to "true" but frees about 6 GB
-          tool-cache: false
-
       - name: setup
         uses: ./.github/actions/devenv
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          nix-cache: /tmp/nixcache
 
       - uses: clechasseur/rs-clippy-check@v4
         with:
@@ -56,18 +48,10 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v4
 
-      - name: free disk space (ubuntu)
-        uses: jlumbroso/free-disk-space@v1.3.1
-        with:
-          # this might remove tools that are actually needed,
-          # if set to "true" but frees about 6 GB
-          tool-cache: false
-
       - name: setup
         uses: ./.github/actions/devenv
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          nix-cache: /tmp/nixcache
 
       - name: build docs
         run: build:docs
@@ -80,18 +64,10 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v4
 
-      - name: free disk space (ubuntu)
-        uses: jlumbroso/free-disk-space@v1.3.1
-        with:
-          # this might remove tools that are actually needed,
-          # if set to "true" but frees about 6 GB
-          tool-cache: false
-
       - name: setup
         uses: ./.github/actions/devenv
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          nix-cache: /tmp/nixcache
 
       - name: test `memory_wallet` with `ssr`
         run: cargo test_memory_wallet_ssr
@@ -134,22 +110,10 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v4
 
-      - name: free disk space (ubuntu)
-        uses: jlumbroso/free-disk-space@v1.3.1
-        with:
-          # this might remove tools that are actually needed,
-          # if set to "true" but frees about 6 GB
-          tool-cache: false
-
       - name: setup
         uses: ./.github/actions/devenv
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          nix-cache: /tmp/nixcache
-
-      # - name: install rust nightly
-      #   run: rustup toolchain install nightly
-      #   shell: bash
 
       - name: coverage `memory_wallet_ssr`
         run: cargo coverage_memory_wallet_ssr
@@ -194,18 +158,10 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v4
 
-      - name: free disk space (ubuntu)
-        uses: jlumbroso/free-disk-space@v1.3.1
-        with:
-          # this might remove tools that are actually needed,
-          # if set to "true" but frees about 6 GB
-          tool-cache: false
-
       - name: setup
         uses: ./.github/actions/devenv
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          nix-cache: /tmp/nixcache
 
       - name: build
         run: cargo build --locked

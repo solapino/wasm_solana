@@ -4,81 +4,56 @@ inputs:
   github-token:
     description: Provide a github token
     required: true
-  nix-cache:
-    description: The location of the nix cache
-    required: true
 
 runs:
   using: composite
   steps:
-    - name: free disk space
-      run: |
-        sudo rm -rf /usr/share/dotnet
-        sudo rm -rf /usr/local/lib/android
-        sudo rm -rf /opt/ghc
-        sudo rm -rf "/usr/local/share/boost"
-        df -h
-      shell: bash
-
-    - name: cache nix store
-      uses: actions/cache@v4
-      id: nix-cache
-      with:
-        path: ${{ inputs.nix-cache }}
-        key: ${{ runner.os }}-nix-cache-${{ hashFiles('**/devenv.nix', '**/devenv.yaml', '**/devenv.lock') }}
-        restore-keys: ${{ runner.os }}-nix-v0-
-
+    # - name: free disk space (ubuntu)
+    #   uses: jlumbroso/free-disk-space@v1.3.1
+    #   with:
+    #     # this might remove tools that are actually needed,
+    #     # if set to "true" but frees about 6 GB
+    #     tool-cache: true
     - name: install nix
       uses: cachix/install-nix-action@v31
       with:
         github_access_token: ${{ inputs.github-token }}
 
-    - name: import nix store cache
-      if: steps.nix-cache.outputs.cache-hit == 'true'
-      run: nix-store --import < ${{ inputs.nix-cache }}
-      shell: bash
-
     - name: enable cachix
       uses: cachix/cachix-action@v16
       with:
-        name: devenv
+        name: wasm_solana
+        authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
     - name: install devenv.sh
-      run: |
-        cachix use devenv
-        nix profile install nixpkgs#devenv
+      run: nix profile install nixpkgs#devenv
       shell: bash
 
     - name: build developer environment
       run: devenv test
       shell: bash
 
-    - name: export nix store cache
-      if: steps.nix-cache.outputs.cache-hit != 'true'
-      run: nix-store --export $(find /nix/store -maxdepth 1 -name '*-*')> ${{ inputs.nix-cache }}
-      shell: bash
-
     - name: cache rust dependencies
       uses: Swatinem/rust-cache@v2
       with:
         prefix-key: "v0-rust"
-        key: ${{ runner.os }}-rust-v0-
+        key: ${{ runner.os }}
 
     - name: cache cargo binaries
       uses: actions/cache@v4
       with:
         path: ./.bin
-        key: ${{ runner.os }}-cargo-bin-${{ env.RUSTUP_TOOLCHAIN }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.toml') }}
+        key: ${{ runner.os }}-cargo-bin-v1-${{ env.RUSTUP_TOOLCHAIN }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.toml') }}
         restore-keys: |
-          ${{ runner.os }}-cargo-bin-v0-
+          ${{ runner.os }}-cargo-bin-v1-
 
     - name: cache eget
       uses: actions/cache@v4
       with:
         path: ./.eget/bin
-        key: ${{ runner.os }}-v0-eget-${{ hashFiles('.eget/.eget.toml') }}
+        key: ${{ runner.os }}-eget-v1-${{ hashFiles('.eget/.eget.toml') }}
         restore-keys: |
-          ${{ runner.os }}-eget-v0-
+          ${{ runner.os }}-eget-v1-
 
     - name: install dependencies
       run: install:all
