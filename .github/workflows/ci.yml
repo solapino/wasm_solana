@@ -17,10 +17,17 @@ concurrency:
 jobs:
   lint:
     timeout-minutes: 60
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
+
+      - name: free disk space (ubuntu)
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          # this might remove tools that are actually needed,
+          # if set to "true" but frees about 6 GB
+          tool-cache: false
 
       - name: setup
         uses: ./.github/actions/devenv
@@ -42,12 +49,19 @@ jobs:
 
   docs:
     timeout-minutes: 60
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     env:
       RUSTUP_TOOLCHAIN: "nightly"
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
+
+      - name: free disk space (ubuntu)
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          # this might remove tools that are actually needed,
+          # if set to "true" but frees about 6 GB
+          tool-cache: false
 
       - name: setup
         uses: ./.github/actions/devenv
@@ -61,10 +75,17 @@ jobs:
 
   test:
     timeout-minutes: 60
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
+
+      - name: free disk space (ubuntu)
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          # this might remove tools that are actually needed,
+          # if set to "true" but frees about 6 GB
+          tool-cache: false
 
       - name: setup
         uses: ./.github/actions/devenv
@@ -108,10 +129,17 @@ jobs:
 
   coverage:
     timeout-minutes: 60
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
+
+      - name: free disk space (ubuntu)
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          # this might remove tools that are actually needed,
+          # if set to "true" but frees about 6 GB
+          tool-cache: false
 
       - name: setup
         uses: ./.github/actions/devenv
@@ -161,10 +189,17 @@ jobs:
 
   build:
     timeout-minutes: 60
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
+
+      - name: free disk space (ubuntu)
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          # this might remove tools that are actually needed,
+          # if set to "true" but frees about 6 GB
+          tool-cache: false
 
       - name: setup
         uses: ./.github/actions/devenv
@@ -189,7 +224,7 @@ jobs:
   release:
     timeout-minutes: 60
     if: github.event_name == 'push'
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     needs: [test, lint, build]
     steps:
       - name: generate token
