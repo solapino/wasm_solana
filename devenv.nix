@@ -4,6 +4,9 @@
   config,
   ...
 }:
+let
+  llvm = pkgs.llvmPackages_latest;
+in
 
 {
   packages =
@@ -13,6 +16,7 @@
       cargo-binstall
       cargo-run-bin
       chromedriver
+      cmake
       dprint
       eget
       nixfmt-rfc-style
@@ -20,17 +24,27 @@
       protobuf # needed for `solana-test-validator` in tests
       rustup
       shfmt
-      gcc
+      llvm.bintools
+      llvm.clang-tools
     ]
     ++ lib.optionals stdenv.isDarwin [
       libiconv
       coreutils
+    ]
+    ++ lib.optionals stdenv.isLinux [
+      llvm.lld
     ];
 
   env = {
     EGET_CONFIG = "${config.env.DEVENV_ROOT}/.eget/.eget.toml";
-    CC = "${pkgs.gcc}/bin/gcc";
-    CXX = "${pkgs.gcc}/bin/g++";
+    CC_LD = if pkgs.stdenv.isLinux then "lld" else null;
+    # CC = "${pkgs.gcc}/bin/gcc";
+    CXX_LD = if pkgs.stdenv.isLinux then "lld" else null;
+    # CXX = "${pkgs.gcc}/bin/g++";
+    LDFLAGS = "-L${pkgs.lib.getLib pkgs.llvmPackages_21.libllvm}/lib -L${pkgs.lib.getLib pkgs.llvmPackages_21.clang-unwrapped}/lib";
+    LIBCLANG_PATH = "${pkgs.lib.getLib pkgs.llvmPackages_21.clang-unwrapped}/lib";
+    LLVM_CONFIG_PATH = "${pkgs.llvmPackages_21.libllvm}/bin/llvm-config";
+    CPPFLAGS = "-I${pkgs.llvmPackages_21.libllvm}/include -I${pkgs.llvmPackages_21.clang-unwrapped}/include";
   };
 
   # Rely on the global sdk for now as the nix apple sdk is not working for me.
