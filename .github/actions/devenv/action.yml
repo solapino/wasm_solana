@@ -12,18 +12,17 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: free disk space (ubuntu)
-      uses: wimpysworld/nothing-but-nix@v6
-      with:
-        hatchet-protocol: "cleave"
-        witness-carnage: true
-
-    # - name: install nix
-    #   uses: cachix/install-nix-action@v31
+    # - name: free disk space (ubuntu)
+    #   uses: wimpysworld/nothing-but-nix@v6
     #   with:
-    #     github_access_token: ${{ inputs.github-token }}
-    - name: install determinate nix
-      uses: DeterminateSystems/nix-installer-action@v20
+    #     hatchet-protocol: "cleave"
+    #     witness-carnage: true
+    # - name: install determinate nix
+    #   uses: DeterminateSystems/nix-installer-action@v20
+    - name: install nix
+      uses: cachix/install-nix-action@v31
+      with:
+        github_access_token: ${{ inputs.github-token }}
 
     - name: enable cachix
       uses: cachix/cachix-action@v16
