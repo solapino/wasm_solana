@@ -33,12 +33,14 @@ in
       pkg-config
       udev
       zstd
+      llvm.clang
     ];
 
   env = {
     EGET_CONFIG = "${config.env.DEVENV_ROOT}/.eget/.eget.toml";
-    # CC = "${pkgs.gcc}/bin/gcc";
-    # CXX = "${pkgs.gcc}/bin/g++";
+  } // lib.optionalAttrs pkgs.stdenv.isLinux {
+    CC = "${llvm.clang}/bin/clang";
+    CXX = "${llvm.clang}/bin/clang++";
   };
 
   # Rely on the global sdk for now as the nix apple sdk is not working for me.
