@@ -5,8 +5,6 @@ runner = 'wasm-bindgen-test-runner'
 insta = ["bin", "cargo-insta"]
 llvm-cov = ["bin", "cargo-llvm-cov"]
 nextest = ["bin", "cargo-nextest"]
-semver-checks = ["bin", "cargo-semver-checks"]
-interactive-update = ["bin", "cargo-interactive-update"]
 
 test_wasm = [
 	"test",

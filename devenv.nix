@@ -13,61 +13,41 @@ in
     with pkgs;
     [
       binaryen
-      cargo-binstall
+      cargo-binstall # speed up cargo-rust-bin installs
       cargo-run-bin
       chromedriver
       cmake
       dprint
       eget
       libiconv
-      llvm.bintools
-      llvm.clang-tools
-      # llvm.clang-unwrapped
-      # llvm.libllvm
-      # llvm.lld
-      # llvm.lldb
       nixfmt-rfc-style
       openssl
-      pkg-config
       protobuf # needed for `solana-test-validator` in tests
-      # rustup
+      rustup
       shfmt
     ]
     ++ lib.optionals stdenv.isDarwin [
       coreutils
+    ]
+    ++ lib.optionals stdenv.isLinux [
+      pkg-config
+      udev
+      zstd
     ];
-  # ++ lib.optionals stdenv.isLinux [
-  #   llvm.lld
-  # ];
 
   env = {
     EGET_CONFIG = "${config.env.DEVENV_ROOT}/.eget/.eget.toml";
-    # CC_LD = "${llvm.lld}";
-    # CXX_LD = "${llvm.lld}";
-    # LDFLAGS = "-L${config.env.DEVENV_PROFILE}/lib";
-    # LIBCLANG_PATH = "${config.env.DEVENV_PROFILE}/lib";
-    # LLVM_CONFIG_PATH = "${config.env.DEVENV_PROFILE}/bin/llvm-config";
-    # CPPFLAGS = "-I${config.env.DEVENV_PROFILE}/include";
+    # CC = "${pkgs.gcc}/bin/gcc";
+    # CXX = "${pkgs.gcc}/bin/g++";
   };
-
-  # languages = {
-  #   rust = {
-  #     enable = true;
-  #     channel = "stable";
-  #     version = "1.90.0";
-  #     component = ["rustc" "cargo" "clippy" "rustfmt" "rust-analyzer" "llvm-tools"]
-  #   };
-  # };
 
   # Rely on the global sdk for now as the nix apple sdk is not working for me.
   # apple.sdk = if pkgs.stdenv.isDarwin then pkgs.apple-sdk_15 else null;
   apple.sdk = null;
-  stdenv = llvm.stdenv;
 
   enterShell = ''
     set -e
     export PATH="$DEVENV_ROOT/.eget/bin:$PATH";
-    # export LDFLAGS="$NIX_LDFLAGS";
   '';
 
   # disable dotenv since it breaks the variable interpolation supported by `direnv`

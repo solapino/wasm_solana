@@ -16,12 +16,8 @@ concurrency:
 
 jobs:
   lint:
-    defaults:
-      run:
-        shell: devenv shell bash -- -e {0}
     timeout-minutes: 60
-    runs-on: ubuntu-latest
-    #   runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
@@ -33,12 +29,15 @@ jobs:
 
       - name: install nightly rustfmt
         run: rustup toolchain install nightly --component rustfmt
+        shell: devenv shell bash -- -e {0}
 
       - name: lint clippy
         run: lint:clippy
+        shell: devenv shell bash -- -e {0}
 
       - name: lint formatting
         run: lint:format
+        shell: devenv shell bash -- -e {0}
 
   # docs:
   #   timeout-minutes: 60
@@ -59,12 +58,8 @@ jobs:
   #       run: build:docs
 
   test:
-    defaults:
-      run:
-        shell: devenv shell bash -- -e {0}
     timeout-minutes: 60
-    runs-on: ubuntu-latest
-    #   runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
@@ -76,21 +71,27 @@ jobs:
 
       - name: test `memory_wallet` with `ssr`
         run: cargo test_memory_wallet_ssr
+        shell: devenv shell bash -- -e {0}
 
       - name: test `memory_wallet` with `docs`
         run: cargo test_memory_wallet_docs
+        shell: devenv shell bash -- -e {0}
 
       - name: test `wasm_client_solana` with `ssr`
         run: cargo test_wasm_client_solana_ssr
+        shell: devenv shell bash -- -e {0}
 
       - name: test `wasm_client_solana` with `docs`
         run: cargo test_wasm_client_solana_docs
+        shell: devenv shell bash -- -e {0}
 
       - name: test `test_utils_solana` with `ssr` and `test_validator`
         run: cargo test_streams
+        shell: devenv shell bash -- -e {0}
 
       - name: test `example_client`
         run: cargo test_example_client
+        shell: devenv shell bash -- -e {0}
 
       - name: test `wasm` with background validator
         env:
@@ -98,14 +99,11 @@ jobs:
         run: |
           rustup target add wasm32-unknown-unknown
           test:validator
+        shell: devenv shell bash -- -e {0}
 
   coverage:
-    defaults:
-      run:
-        shell: devenv shell bash -- -e {0}
     timeout-minutes: 60
-    runs-on: ubuntu-latest
-    #   runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
@@ -117,6 +115,7 @@ jobs:
 
       - name: coverage `memory_wallet_ssr`
         run: cargo coverage_memory_wallet_ssr
+        shell: devenv shell bash -- -e {0}
 
       # - name: coverage `memory_wallet_docs`
       #   run: cargo +nightly coverage_memory_wallet_docs
@@ -124,6 +123,7 @@ jobs:
 
       - name: coverage `wasm_client_solana_ssr`
         run: cargo coverage_wasm_client_solana_ssr
+        shell: devenv shell bash -- -e {0}
 
       # - name: coverage `wasm_client_solana_docs`
       #   run: cargo +nightly coverage_wasm_client_solana_docs
@@ -131,9 +131,11 @@ jobs:
 
       - name: coverage `streams`
         run: cargo coverage_streams
+        shell: devenv shell bash -- -e {0}
 
       - name: coverage `example_client`
         run: cargo coverage_example_client
+        shell: devenv shell bash -- -e {0}
 
       - name: coverage `codecov_report`
         run: cargo coverage_codecov_report
@@ -148,12 +150,8 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   build:
-    defaults:
-      run:
-        shell: devenv shell bash -- -e {0}
     timeout-minutes: 60
-    runs-on: ubuntu-latest
-    #   runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
@@ -185,7 +183,6 @@ jobs:
     timeout-minutes: 60
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    #   runs-on: blacksmith-2vcpu-ubuntu-2404
     needs: [test, lint, build]
     steps:
       - name: setup rust

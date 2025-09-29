@@ -12,32 +12,14 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: free disk space (ubuntu)
-      uses: wimpysworld/nothing-but-nix@main
-      with:
-        hatchet-protocol: "cleave"
-        witness-carnage: true
+    # - name: free disk space (ubuntu)
+    #   uses: wimpysworld/nothing-but-nix@main
+    #   with:
+    #     hatchet-protocol: "cleave"
+    #     witness-carnage: true
 
     # - name: install determinate nix
     #   uses: DeterminateSystems/nix-installer-action@v20
-    - name: install nix
-      uses: cachix/install-nix-action@v31
-      with:
-        github_access_token: ${{ inputs.github-token }}
-
-    - name: enable cachix
-      uses: cachix/cachix-action@v16
-      with:
-        name: devenv
-
-    - name: install devenv.sh
-      run: nix profile add nixpkgs#devenv
-      shell: bash
-
-    - name: build developer environment
-      run: devenv test
-      shell: bash
-
     - name: cache rust dependencies
       uses: Swatinem/rust-cache@v2
       with:
@@ -60,6 +42,26 @@ runs:
         restore-keys: |
           ${{ runner.os }}-eget-${{ inputs.cache-version }}-
 
-    # - name: install dependencies
-    #   run: install:all
-    #   shell: devenv shell bash -- -e {0}
+    - name: install llvm and clang
+      uses: KyleMayes/install-llvm-action@v2
+      with:
+        version: 20
+        env: true
+
+    - name: install nix
+      uses: cachix/install-nix-action@v31
+      with:
+        github_access_token: ${{ inputs.github-token }}
+
+    - name: enable cachix
+      uses: cachix/cachix-action@v16
+      with:
+        name: devenv
+
+    - name: install devenv.sh
+      run: nix profile add nixpkgs#devenv
+      shell: bash
+
+    - name: install dependencies
+      run: install:all
+      shell: devenv shell bash -- -e {0}
