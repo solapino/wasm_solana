@@ -5,7 +5,7 @@
   ...
 }:
 let
-  llvm = if pkgs.stdenv.isLinux then pkgs.pkgsLLVM else pkgs.llvmPackages_21;
+  llvm = pkgs.llvmPackages_21;
 in
 
 {
@@ -19,45 +19,55 @@ in
       cmake
       dprint
       eget
-      nixfmt-rfc-style
-      openssl
-      protobuf # needed for `solana-test-validator` in tests
-      rustup
-      shfmt
-      cmake
-      pkg-config
       libiconv
       llvm.bintools
       llvm.clang-tools
+      # llvm.clang-unwrapped
+      # llvm.libllvm
+      # llvm.lld
+      # llvm.lldb
+      nixfmt-rfc-style
+      openssl
+      pkg-config
+      protobuf # needed for `solana-test-validator` in tests
+      # rustup
+      shfmt
     ]
     ++ lib.optionals stdenv.isDarwin [
       coreutils
-    ]
-    ++ lib.optionals stdenv.isLinux [
-      llvm.lld
     ];
+  # ++ lib.optionals stdenv.isLinux [
+  #   llvm.lld
+  # ];
 
   env = {
     EGET_CONFIG = "${config.env.DEVENV_ROOT}/.eget/.eget.toml";
-    CC_LD = if pkgs.stdenv.isLinux then "lld" else null;
-    CXX_LD = if pkgs.stdenv.isLinux then "lld" else null;
-    # CC = "${pkgs.gcc}/bin/gcc";
-    # CXX = "${pkgs.gcc}/bin/g++";
-    # LDFLAGS = "-L${pkgs.lib.getLib llvm.libllvm}/lib -L${pkgs.lib.getLib llvm.clang-unwrapped}/lib";
-    # LIBCLANG_PATH = "${pkgs.lib.getLib llvm.clang-unwrapped}/lib";
-    # LLVM_CONFIG_PATH = "${llvm.libllvm}/bin/llvm-config";
-    # CPPFLAGS = "-I${llvm.libllvm}/include -I${llvm.clang-unwrapped}/include";
+    # CC_LD = "${llvm.lld}";
+    # CXX_LD = "${llvm.lld}";
+    # LDFLAGS = "-L${config.env.DEVENV_PROFILE}/lib";
+    # LIBCLANG_PATH = "${config.env.DEVENV_PROFILE}/lib";
+    # LLVM_CONFIG_PATH = "${config.env.DEVENV_PROFILE}/bin/llvm-config";
+    # CPPFLAGS = "-I${config.env.DEVENV_PROFILE}/include";
   };
+
+  # languages = {
+  #   rust = {
+  #     enable = true;
+  #     channel = "stable";
+  #     version = "1.90.0";
+  #     component = ["rustc" "cargo" "clippy" "rustfmt" "rust-analyzer" "llvm-tools"]
+  #   };
+  # };
 
   # Rely on the global sdk for now as the nix apple sdk is not working for me.
   # apple.sdk = if pkgs.stdenv.isDarwin then pkgs.apple-sdk_15 else null;
   apple.sdk = null;
-  stdenv = pkgs.llvmPackages_21.stdenv;
+  stdenv = llvm.stdenv;
 
   enterShell = ''
     set -e
     export PATH="$DEVENV_ROOT/.eget/bin:$PATH";
-    export LDFLAGS="$NIX_LDFLAGS";
+    # export LDFLAGS="$NIX_LDFLAGS";
   '';
 
   # disable dotenv since it breaks the variable interpolation supported by `direnv`

@@ -12,11 +12,12 @@ inputs:
 runs:
   using: composite
   steps:
-    # - name: free disk space (ubuntu)
-    #   uses: wimpysworld/nothing-but-nix@v6
-    #   with:
-    #     hatchet-protocol: "cleave"
-    #     witness-carnage: true
+    - name: free disk space (ubuntu)
+      uses: wimpysworld/nothing-but-nix@main
+      with:
+        hatchet-protocol: "cleave"
+        witness-carnage: true
+
     # - name: install determinate nix
     #   uses: DeterminateSystems/nix-installer-action@v20
     - name: install nix
@@ -59,6 +60,6 @@ runs:
         restore-keys: |
           ${{ runner.os }}-eget-${{ inputs.cache-version }}-
 
-    - name: install dependencies
-      run: install:all
-      shell: devenv shell bash -- -e {0}
+    # - name: install dependencies
+    #   run: install:all
+    #   shell: devenv shell bash -- -e {0}
