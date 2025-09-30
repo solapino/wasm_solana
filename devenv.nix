@@ -50,12 +50,6 @@ in
     EGET_CONFIG = "${config.env.DEVENV_ROOT}/.eget/.eget.toml";
     OPENSSL_NO_VENDOR = "1";
     LIBCLANG_PATH = "${llvm.libclang.lib}/lib";
-  }
-  // lib.optionalAttrs pkgs.stdenv.isLinux {
-    # LIBCLANG_PATH = "${llvm.libclang}/lib";
-    # CC = "${llvm.libclang}/bin/clang";
-    # CXX = "${llvm.libclang}/bin/clang++";
-    # CPATH = "${pkgs.glibc.dev}/include";
   };
 
   # Rely on the global sdk for now as the nix apple sdk is not working for me.
