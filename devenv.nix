@@ -5,7 +5,7 @@
   ...
 }:
 let
-  llvm = pkgs.llvmPackages_19;
+  llvm = pkgs.llvmPackages_21;
 in
 
 {
@@ -19,23 +19,25 @@ in
       cmake
       dprint
       eget
+      gcc
       libiconv
+      llvm.bintools
+      llvm.clang
+      llvm.libclang.lib
+      llvm.clang-tools
+      llvm.lld
+      llvm.llvm
+      llvm.mlir
       nixfmt-rfc-style
       openssl
-      protobuf # needed for `solana-test-validator` in tests
-      rustup
-      shfmt
-      rust-jemalloc-sys
-      llvm.bintools
-      llvm.clang-tools
-      llvm.llvm
       perl
       pkg-config
+      protobuf # needed for `solana-test-validator` in tests
+      rocksdb
+      rust-jemalloc-sys
+      rustup
+      shfmt
       zstd
-      gcc
-      llvm.clang
-      llvm.lld
-      llvm.mlir
     ]
     ++ lib.optionals stdenv.isDarwin [
       coreutils
