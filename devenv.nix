@@ -52,6 +52,8 @@ in
     EGET_CONFIG = "${config.env.DEVENV_ROOT}/.eget/.eget.toml";
     OPENSSL_NO_VENDOR = "1";
     LIBCLANG_PATH = "${llvm.libclang.lib}/lib";
+    CC = "${llvm.clang}/bin/clang";
+    CXX = "${llvm.clang}/bin/clang++";
   };
 
   # Rely on the global sdk for now as the nix apple sdk is not working for me.

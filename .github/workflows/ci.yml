@@ -18,7 +18,6 @@ jobs:
   lint:
     timeout-minutes: 60
     runs-on: blacksmith-2vcpu-ubuntu-2404
-    container: nixos/nix:latest
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
@@ -61,7 +60,6 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: blacksmith-2vcpu-ubuntu-2404
-    container: nixos/nix:latest
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
@@ -106,7 +104,6 @@ jobs:
   coverage:
     timeout-minutes: 60
     runs-on: blacksmith-2vcpu-ubuntu-2404
-    container: nixos/nix:latest
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
@@ -155,7 +152,6 @@ jobs:
   build:
     timeout-minutes: 60
     runs-on: blacksmith-2vcpu-ubuntu-2404
-    container: nixos/nix:latest
     steps:
       - name: checkout repository
         uses: actions/checkout@v4

@@ -34,16 +34,24 @@ runs:
         restore-keys: |
           ${{ runner.os }}-eget-${{ inputs.cache-version }}-
 
+    - name: install nix
+      uses: cachix/install-nix-action@v31
+      with:
+        github_access_token: ${{ inputs.github-token }}
+
     - name: setup nix environment
       run: |
-        mkdir /etc/nix && echo "filter-syscalls = false" >> /etc/nix/nix.conf
-        echo "access-tokens = github.com=${{ inputs.github-token }}"
+        # mkdir /etc/nix && echo "filter-syscalls = false" >> /etc/nix/nix.conf
+        # echo "access-tokens = github.com=${{ inputs.github-token }}"
+        nix profile add --accept-flake-config nixpkgs#cachix
+        cachix use devenv
+        nix profile add nixpkgs#devenv
       shell: bash
 
-    - name: enable cachix
-      uses: cachix/cachix-action@v16
-      with:
-        name: devenv
+    # - name: enable cachix
+    #   uses: cachix/cachix-action@v16
+    #   with:
+    #     name: devenv
 
     - name: install devenv.sh
       run: nix profile add nixpkgs#devenv
