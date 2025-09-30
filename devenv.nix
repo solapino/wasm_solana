@@ -45,12 +45,13 @@ in
       llvm.lld
       # llvm.flang
       llvm.mlir
-      # pkgs.glibc.dev
+      # glibc
       # systemd
       # gnumake
       # linuxHeaders
       # hidapi
       # glibc.dev
+      rust-jemalloc-sys
     ];
 
   env = {
@@ -60,8 +61,8 @@ in
     OPENSSL_NO_VENDOR = "1";
     LIBCLANG_PATH = "${llvm.libclang.lib}/lib";
     # LIBCLANG_PATH = "${llvm.libclang}/lib";
-    CC = "${llvm.libclang}/bin/clang";
-    CXX = "${llvm.libclang}/bin/clang++";
+    # CC = "${llvm.libclang}/bin/clang";
+    # CXX = "${llvm.libclang}/bin/clang++";
     # CPATH = "${pkgs.glibc.dev}/include";
   };
 
@@ -70,7 +71,8 @@ in
   apple.sdk = null;
 
   # Use the stdenv conditionally.
-  stdenv = if pkgs.stdenv.isLinux then llvm.stdenv else pkgs.stdenv;
+  # stdenv = if pkgs.stdenv.isLinux then llvm.stdenv else pkgs.stdenv;
+  stdenv = pkgs.stdenv;
 
   enterShell = ''
     set -e
