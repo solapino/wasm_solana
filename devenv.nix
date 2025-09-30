@@ -5,7 +5,7 @@
   ...
 }:
 let
-  llvm = pkgs.llvmPackages_21;
+  llvm = pkgs.llvmPackages_19;
 in
 
 {
@@ -25,41 +25,31 @@ in
       protobuf # needed for `solana-test-validator` in tests
       rustup
       shfmt
+      rust-jemalloc-sys
+      llvm.bintools
+      llvm.clang-tools
+      llvm.llvm
+      perl
+      pkg-config
+      zstd
+      gcc
+      llvm.clang
+      llvm.lld
+      llvm.mlir
     ]
     ++ lib.optionals stdenv.isDarwin [
       coreutils
     ]
     ++ lib.optionals stdenv.isLinux [
-      perl
-      pkg-config
       udev
-      zstd
-      gcc
-      llvm.bintools
-      llvm.clang-tools
-      llvm.llvm
-      # llvm.libclang
-      llvm.clang
-      # llvm.lldb
-      # llvm.bolt
-      llvm.lld
-      # llvm.flang
-      llvm.mlir
-      # glibc
-      # systemd
-      # gnumake
-      # linuxHeaders
-      # hidapi
-      # glibc.dev
-      rust-jemalloc-sys
     ];
 
   env = {
     EGET_CONFIG = "${config.env.DEVENV_ROOT}/.eget/.eget.toml";
-  }
-  // lib.optionalAttrs pkgs.stdenv.isLinux {
     OPENSSL_NO_VENDOR = "1";
     LIBCLANG_PATH = "${llvm.libclang.lib}/lib";
+  }
+  // lib.optionalAttrs pkgs.stdenv.isLinux {
     # LIBCLANG_PATH = "${llvm.libclang}/lib";
     # CC = "${llvm.libclang}/bin/clang";
     # CXX = "${llvm.libclang}/bin/clang++";
