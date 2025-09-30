@@ -12,14 +12,6 @@ inputs:
 runs:
   using: composite
   steps:
-    # - name: free disk space (ubuntu)
-    #   uses: wimpysworld/nothing-but-nix@main
-    #   with:
-    #     hatchet-protocol: "cleave"
-    #     witness-carnage: true
-
-    # - name: install determinate nix
-    #   uses: DeterminateSystems/nix-installer-action@v20
     - name: cache rust dependencies
       uses: Swatinem/rust-cache@v2
       with:
@@ -41,12 +33,6 @@ runs:
         key: ${{ runner.os }}-eget-${{ inputs.cache-version }}-${{ hashFiles('.eget/.eget.toml') }}
         restore-keys: |
           ${{ runner.os }}-eget-${{ inputs.cache-version }}-
-
-    - name: install llvm and clang
-      uses: KyleMayes/install-llvm-action@v2
-      with:
-        version: 20
-        env: true
 
     - name: install nix
       uses: cachix/install-nix-action@v31
