@@ -34,10 +34,11 @@ runs:
         restore-keys: |
           ${{ runner.os }}-eget-${{ inputs.cache-version }}-
 
-    - name: install nix
-      uses: cachix/install-nix-action@v31
-      with:
-        github_access_token: ${{ inputs.github-token }}
+    - name: setup nix environment
+      run: |
+        mkdir /etc/nix && echo "filter-syscalls = false" >> /etc/nix/nix.conf
+        echo "access-tokens = github.com=${{ inputs.github-token }}"
+      shell: bash
 
     - name: enable cachix
       uses: cachix/cachix-action@v16

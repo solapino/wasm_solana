@@ -17,18 +17,21 @@ in
       cargo-run-bin
       chromedriver
       cmake
+      coreutils
       dprint
       eget
       gcc
+      git
       libiconv
       llvm.bintools
       llvm.clang
-      llvm.libclang.lib
       llvm.clang-tools
+      llvm.libclang.lib
       llvm.lld
       llvm.llvm
       llvm.mlir
       nixfmt-rfc-style
+      nodejs_24
       openssl
       perl
       pkg-config
@@ -40,7 +43,6 @@ in
       zstd
     ]
     ++ lib.optionals stdenv.isDarwin [
-      coreutils
     ]
     ++ lib.optionals stdenv.isLinux [
       udev
