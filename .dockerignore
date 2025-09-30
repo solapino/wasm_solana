@@ -1,0 +1,72 @@
+.bin/
+.git/
+.devenv/
+.direnv/
+.helix/
+.vscode/
+/target/
+
+
+
+/target
+/programs/target
+/.helix
+/result
+/.direnv
+**/rustc-ice-*.txt
+
+# Devenv
+.devenv*
+devenv.local.nix
+
+**/dist/**
+
+# insta snapshots
+*.pending-snap
+*.snap.new
+
+# setup
+/.helix
+/.vscode
+/programs/.vscode
+
+**/tmp**
+**/temp**.bin/
+node_modules/
+/.bin/
+/.local-cache/
+/.sass-cache/
+/.test-results/
+/test-results/
+
+# misc
+.DS_Store
+*.pem
+
+.env
+**/.env
+
+**/*.rs.bk
+/.wallet.json
+/.anchor
+/test-ledger
+
+**/*.pem
+
+# tests
+/test-ledger
+/test-results
+
+**/*.pem
+lcov.info
+codecov.json
+
+# Devenv
+.devenv*
+devenv.local.nix
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml

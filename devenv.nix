@@ -30,30 +30,57 @@ in
       coreutils
     ]
     ++ lib.optionals stdenv.isLinux [
+      perl
       pkg-config
       udev
       zstd
+      gcc
+      llvm.bintools
+      llvm.clang-tools
+      llvm.llvm
+      # llvm.libclang
       llvm.clang
+      # llvm.lldb
+      # llvm.bolt
+      llvm.lld
+      # llvm.flang
+      llvm.mlir
+      # pkgs.glibc.dev
+      # systemd
+      # gnumake
+      # linuxHeaders
+      # hidapi
+      # glibc.dev
     ];
 
   env = {
     EGET_CONFIG = "${config.env.DEVENV_ROOT}/.eget/.eget.toml";
-  } // lib.optionalAttrs pkgs.stdenv.isLinux {
-    CC = "${llvm.clang}/bin/clang";
-    CXX = "${llvm.clang}/bin/clang++";
+  }
+  // lib.optionalAttrs pkgs.stdenv.isLinux {
+    OPENSSL_NO_VENDOR = "1";
+    LIBCLANG_PATH = "${llvm.libclang.lib}/lib";
+    # LIBCLANG_PATH = "${llvm.libclang}/lib";
+    CC = "${llvm.libclang}/bin/clang";
+    CXX = "${llvm.libclang}/bin/clang++";
+    # CPATH = "${pkgs.glibc.dev}/include";
   };
 
   # Rely on the global sdk for now as the nix apple sdk is not working for me.
   # apple.sdk = if pkgs.stdenv.isDarwin then pkgs.apple-sdk_15 else null;
   apple.sdk = null;
 
+  # Use the stdenv conditionally.
+  stdenv = if pkgs.stdenv.isLinux then llvm.stdenv else pkgs.stdenv;
+
   enterShell = ''
     set -e
     export PATH="$DEVENV_ROOT/.eget/bin:$PATH";
+    export LDFLAGS=$NIX_LDFLAGS;
   '';
 
   # disable dotenv since it breaks the variable interpolation supported by `direnv`
   dotenv.disableHint = true;
+  devcontainer.enable = true;
 
   tasks = {
     "rustfmt:nightly" = {
@@ -307,6 +334,15 @@ in
         cp -r $DEVENV_ROOT/setup/editors/helix .helix
       '';
       description = "Setup for the helix editor.";
+      binary = "bash";
+    };
+    "local:docker" = {
+      exec = ''
+        set -e
+        docker build -t wasm_solana_dev ./setup
+        docker run -v "$(pwd)":/app wasm_solana_dev 
+      '';
+      description = "Run a docker image to simulate running a linux environment";
       binary = "bash";
     };
   };
