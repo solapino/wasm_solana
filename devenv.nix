@@ -21,17 +21,16 @@ in
       dprint
       eget
       gcc
-      git
       libiconv
       llvm.bintools
       llvm.clang
       llvm.clang-tools
-      llvm.libclang.lib
+      llvm.libclang
+      # llvm.libclang.lib
       llvm.lld
       llvm.llvm
       llvm.mlir
       nixfmt-rfc-style
-      nodejs_24
       openssl
       perl
       pkg-config
@@ -51,9 +50,9 @@ in
   env = {
     EGET_CONFIG = "${config.env.DEVENV_ROOT}/.eget/.eget.toml";
     OPENSSL_NO_VENDOR = "1";
-    LIBCLANG_PATH = "${llvm.libclang.lib}/lib";
-    CC = "${llvm.clang}/bin/clang";
-    CXX = "${llvm.clang}/bin/clang++";
+    LIBCLANG_PATH = "${llvm.libclang}/lib";
+    CC = "${llvm.libclang}/bin/clang";
+    CXX = "${llvm.libclang}/bin/clang++";
   };
 
   # Rely on the global sdk for now as the nix apple sdk is not working for me.
@@ -328,11 +327,11 @@ in
       description = "Setup for the helix editor.";
       binary = "bash";
     };
-    "local:docker" = {
+    "build:docker" = {
       exec = ''
         set -e
-        docker build -t wasm_solana_dev ./setup
-        docker run -v "$(pwd)":/app wasm_solana_dev 
+        docker build -t wasm_solana_dev $DEVENV_ROOT
+        docker run --rm -it --entrypoint bash -v $DEVENV_ROOT:/app -w /app wasm_solana_dev
       '';
       description = "Run a docker image to simulate running a linux environment";
       binary = "bash";
