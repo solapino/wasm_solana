@@ -17,16 +17,14 @@ in
       cargo-run-bin
       chromedriver
       cmake
-      coreutils
       dprint
       eget
       gcc
       libiconv
       llvm.bintools
+      llvm.libclang
       llvm.clang
       llvm.clang-tools
-      llvm.libclang
-      # llvm.libclang.lib
       llvm.lld
       llvm.llvm
       llvm.mlir
@@ -42,6 +40,7 @@ in
       zstd
     ]
     ++ lib.optionals stdenv.isDarwin [
+      coreutils
     ]
     ++ lib.optionals stdenv.isLinux [
       udev
@@ -50,9 +49,9 @@ in
   env = {
     EGET_CONFIG = "${config.env.DEVENV_ROOT}/.eget/.eget.toml";
     OPENSSL_NO_VENDOR = "1";
-    LIBCLANG_PATH = "${llvm.libclang}/lib";
-    CC = "${llvm.libclang}/bin/clang";
-    CXX = "${llvm.libclang}/bin/clang++";
+    LIBCLANG_PATH = "${llvm.libclang.lib}/lib";
+    CC = "${llvm.clang}/bin/clang";
+    CXX = "${llvm.clang}/bin/clang++";
   };
 
   # Rely on the global sdk for now as the nix apple sdk is not working for me.
@@ -330,7 +329,8 @@ in
     "build:docker" = {
       exec = ''
         set -e
-        docker build -t wasm_solana_dev $DEVENV_ROOT
+        export DOCKER_BUILDKIT=1
+        docker build --secret id=GITHUB_TOKEN -t wasm_solana_dev $DEVENV_ROOT
         docker run --rm -it --entrypoint bash -v $DEVENV_ROOT:/app -w /app wasm_solana_dev
       '';
       description = "Run a docker image to simulate running a linux environment";
