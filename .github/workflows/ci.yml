@@ -18,14 +18,18 @@ jobs:
   lint:
     timeout-minutes: 60
     runs-on: blacksmith-2vcpu-ubuntu-2404
+    container: nixos/nix:latest
     steps:
+      - name: setup nix environment
+        uses: solapino/wasm_solana/.github/actions/nix@ci/blacksmith
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: checkout repository
         uses: actions/checkout@v4
 
-      - name: setup
+      - name: init devenv
         uses: ./.github/actions/devenv
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: install nightly rustfmt
         run: rustup toolchain install nightly --component rustfmt
@@ -60,14 +64,18 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: blacksmith-2vcpu-ubuntu-2404
+    container: nixos/nix:latest
     steps:
+      - name: setup nix environment
+        uses: solapino/wasm_solana/.github/actions/nix@ci/blacksmith
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: checkout repository
         uses: actions/checkout@v4
 
-      - name: setup
+      - name: init devenv
         uses: ./.github/actions/devenv
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: test `memory_wallet` with `ssr`
         run: cargo test_memory_wallet_ssr
@@ -104,14 +112,18 @@ jobs:
   coverage:
     timeout-minutes: 60
     runs-on: blacksmith-2vcpu-ubuntu-2404
+    container: nixos/nix:latest
     steps:
+      - name: setup nix environment
+        uses: solapino/wasm_solana/.github/actions/nix@ci/blacksmith
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: checkout repository
         uses: actions/checkout@v4
 
-      - name: setup
+      - name: init devenv
         uses: ./.github/actions/devenv
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: coverage `memory_wallet_ssr`
         run: cargo coverage_memory_wallet_ssr
@@ -152,14 +164,18 @@ jobs:
   build:
     timeout-minutes: 60
     runs-on: blacksmith-2vcpu-ubuntu-2404
+    container: nixos/nix:latest
     steps:
+      - name: setup nix environment
+        uses: solapino/wasm_solana/.github/actions/nix@ci/blacksmith
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: checkout repository
         uses: actions/checkout@v4
 
-      - name: setup
+      - name: init devenv
         uses: ./.github/actions/devenv
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: build
         run: cargo build --locked

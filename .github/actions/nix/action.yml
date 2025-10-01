@@ -1,0 +1,39 @@
+name: nix
+description: "Setup development environment with nix"
+inputs:
+  github-token:
+    description: Provide a github token
+    required: true
+
+runs:
+  using: composite
+  steps:
+    # - name: fix ownership
+    #   run: chown -R "$(whoami)" /github/home
+    #   shell: bash
+    - name: setup nix environment
+      run: |
+        echo "filter-syscalls = false" >> /etc/nix/nix.conf
+        echo "access-tokens = github.com=${{ inputs.github-token }}" >> /etc/nix/nix.conf
+        echo "extra-experimental-features = nix-command flakes" >> /etc/nix/nix.conf
+      shell: bash
+
+    - name: setup cachix
+      run: |
+        nix profile add --accept-flake-config nixpkgs#cachix
+        cachix use devenv
+      shell: bash
+
+    - name: setup devenv
+      run: |
+        nix profile add nixpkgs#devenv
+      shell: bash
+
+    - name: setup github actions environment
+      run: |
+        nix profile add nixpkgs#nodejs_24
+        mkdir -p /__e/node20/bin/
+        mkdir -p /__e/node24/bin/
+        ln -s "$(which node)" /__e/node20/bin/node
+        ln -s "$(which node)" /__e/node24/bin/node
+      shell: bash

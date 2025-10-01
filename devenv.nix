@@ -22,7 +22,7 @@ in
       gcc
       libiconv
       llvm.bintools
-      llvm.libclang
+      # llvm.libclang.lib
       llvm.clang
       llvm.clang-tools
       llvm.lld
@@ -33,11 +33,14 @@ in
       perl
       pkg-config
       protobuf # needed for `solana-test-validator` in tests
-      rocksdb
       rust-jemalloc-sys
       rustup
       shfmt
       zstd
+
+      # for github actions
+      # nodejs_24
+      # git
     ]
     ++ lib.optionals stdenv.isDarwin [
       coreutils
@@ -324,6 +327,14 @@ in
         cp -r $DEVENV_ROOT/setup/editors/helix .helix
       '';
       description = "Setup for the helix editor.";
+      binary = "bash";
+    };
+    "setup:nextest" = {
+      exec = ''
+        set -e
+        $DEVENV_ROOT/setup/scripts/nextest_setup.sh $@
+      '';
+      description = "Run the setup for nextest";
       binary = "bash";
     };
     "build:docker" = {

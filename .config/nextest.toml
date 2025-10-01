@@ -4,8 +4,9 @@
 # Enable experimental features
 experimental = ["setup-scripts"]
 
-[script.default]
-command = ["setup/scripts/nextest_setup.sh"]
+[scripts.setup.main]
+command = { command-line = "setup/scripts/nextest_setup.sh", relative-to = "workspace-root" }
+# command = { command-line = "setup:nextest", relative-to = "none" }
 
 [store]
 # The directory under the workspace root at which nextest-related files are
@@ -137,4 +138,4 @@ fail-fast = false
 
 [[profile.default.scripts]]
 filter = 'all()'
-setup = "default"
+setup = "main"
