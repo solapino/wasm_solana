@@ -64,6 +64,13 @@ jobs:
       - name: setup
         uses: ./.github/actions/simple
 
+      - name: increase open file limit
+        run: |
+          sudo prlimit --pid $$ --nofile=1000000:1000000
+          echo "New file limit is:"
+          ulimit -n
+        shell: bash
+
       - name: test `memory_wallet` with `ssr`
         run: cargo test_memory_wallet_ssr
         shell: devenv shell bash -- -e {0}
