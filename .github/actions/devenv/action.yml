@@ -16,7 +16,9 @@ runs:
       uses: Swatinem/rust-cache@v2
       with:
         prefix-key: "${{ inputs.cache-version }}"
-        key: ${{ runner.os }}-rust
+        shared-key: "main"
+        cache-on-failure: ${{ github.event.name == 'push' && true || false  }}
+        save-if: ${{ github.event.name == 'push' && 'true' || 'false'  }}
 
     - name: cache cargo binaries
       uses: actions/cache@v4
