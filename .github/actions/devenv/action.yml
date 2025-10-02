@@ -17,8 +17,8 @@ runs:
       with:
         prefix-key: "${{ inputs.cache-version }}"
         shared-key: "main"
-        cache-on-failure: ${{ github.event.name == 'push' && true || false  }}
-        save-if: ${{ github.event.name == 'push' && 'true' || 'false'  }}
+        # cache-on-failure: ${{ github.event.name == 'push' && true || false  }}
+        # save-if: ${{ github.event.name == 'push' && 'true' || 'false'  }}
 
     - name: cache cargo binaries
       uses: actions/cache@v4
@@ -43,9 +43,6 @@ runs:
 
     - name: setup nix environment
       run: |
-        env
-        echo "LIBCLANG_PATH=$LIBCLANG_PATH"
-        ls -al $LIBCLANG_PATH
         nix profile add --accept-flake-config nixpkgs#cachix
         cachix use devenv
         nix profile add nixpkgs#devenv
@@ -53,7 +50,7 @@ runs:
 
     - name: install dependencies
       run: install:cargo:bin
-      shell: devenv shell -c -- bash -e {0}
+      shell: devenv shell -vc -- bash -e {0}
 
     - name: debug
       run: |
