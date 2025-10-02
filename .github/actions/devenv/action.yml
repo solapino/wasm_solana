@@ -12,32 +12,32 @@ inputs:
 runs:
   using: composite
   steps:
-    # - name: free disk space (ubuntu)
-    #   uses: wimpysworld/nothing-but-nix@main
+    - name: free disk space (ubuntu)
+      uses: wimpysworld/nothing-but-nix@main
+      with:
+        hatchet-protocol: "rampage"
+        witness-carnage: true
+    # - name: cache rust dependencies
+    #   uses: Swatinem/rust-cache@v2
     #   with:
-    #     hatchet-protocol: "rampage"
-    #     witness-carnage: true
-    - name: cache rust dependencies
-      uses: Swatinem/rust-cache@v2
-      with:
-        prefix-key: "${{ inputs.cache-version }}"
-        key: ${{ runner.os }}-rust
+    #     prefix-key: "${{ inputs.cache-version }}"
+    #     key: ${{ runner.os }}-rust
 
-    - name: cache cargo binaries
-      uses: actions/cache@v4
-      with:
-        path: ./.bin
-        key: ${{ runner.os }}-cargo-bin-${{ inputs.cache-version }}-${{ env.RUSTUP_TOOLCHAIN }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.toml') }}
-        restore-keys: |
-          ${{ runner.os }}-cargo-bin-${{ inputs.cache-version }}-
+    # - name: cache cargo binaries
+    #   uses: actions/cache@v4
+    #   with:
+    #     path: ./.bin
+    #     key: ${{ runner.os }}-cargo-bin-${{ inputs.cache-version }}-${{ env.RUSTUP_TOOLCHAIN }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.toml') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-cargo-bin-${{ inputs.cache-version }}-
 
-    - name: cache eget
-      uses: actions/cache@v4
-      with:
-        path: ./.eget/bin
-        key: ${{ runner.os }}-eget-${{ inputs.cache-version }}-${{ hashFiles('.eget/.eget.toml') }}
-        restore-keys: |
-          ${{ runner.os }}-eget-${{ inputs.cache-version }}-
+    # - name: cache eget
+    #   uses: actions/cache@v4
+    #   with:
+    #     path: ./.eget/bin
+    #     key: ${{ runner.os }}-eget-${{ inputs.cache-version }}-${{ hashFiles('.eget/.eget.toml') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-eget-${{ inputs.cache-version }}-
 
     - name: install nix
       uses: cachix/install-nix-action@v31
