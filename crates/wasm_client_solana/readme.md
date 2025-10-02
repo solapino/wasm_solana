@@ -10,20 +10,30 @@
 
 ## Installation
 
-To install you can use the following command:
-
-```bash
-cargo add wasm_client_solana
-```
-
-Or directly add the following to your `Cargo.toml`:
+Add the following to your `Cargo.toml`:
 
 ```toml
 [dependencies]
 wasm_client_solana = "0.1" # replace with the latest version
 ```
 
-### Features
+Or use `cargo add`:
+
+```bash
+cargo add wasm_client_solana
+```
+
+## Building for WASM
+
+When building your crate for the `wasm32-unknown-unknown` target, you need to set a specific `RUSTFLAGS` environment variable. This is required by the `getrandom` crate, a dependency used for generating random numbers, to correctly function in a WASM environment.
+
+```bash
+export RUSTFLAGS='--cfg getrandom_backend="wasm_js"'
+```
+
+Without this flag, you may encounter compilation errors related to `getrandom`.
+
+## Features
 
 This crate provides the following features:
 

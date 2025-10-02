@@ -76,18 +76,18 @@ use test_utils_solana::TestValidatorRunnerProps;
 
 #[tokio::test(flavor = "multi_thread")]
 async fn my_integration_test() {
-    let pubkey = pubkey!("99P8ZgtJYe1buSK8JXkvpLh8xPsCFuLYhz9hQFNw93WJ");
-    let props = TestValidatorRunnerProps::builder()
-        .pubkeys(vec![pubkey]) // Pubkeys to fund
-        .initial_lamports(1_000_000_000) // Lamports to fund each pubkey with
-        .namespace("my_test") // Namespace for the validator's RPC client
-        .build();
+	let pubkey = pubkey!("99P8ZgtJYe1buSK8JXkvpLh8xPsCFuLYhz9hQFNw93WJ");
+	let props = TestValidatorRunnerProps::builder()
+		.pubkeys(vec![pubkey]) // Pubkeys to fund
+		.initial_lamports(1_000_000_000) // Lamports to fund each pubkey with
+		.namespace("my_test") // Namespace for the validator's RPC client
+		.build();
 
-    let validator = TestValidatorRunner::run(props).await;
-    let rpc_client = validator.rpc();
+	let validator = TestValidatorRunner::run(props).await;
+	let rpc_client = validator.rpc();
 
-    // Your test logic here...
-    // You can use the rpc_client to interact with the test validator
+	// Your test logic here...
+	// You can use the rpc_client to interact with the test validator
 }
 ```
 
@@ -104,27 +104,26 @@ use test_utils_solana::TestRpcProvider;
 
 #[tokio::test(flavor = "multi_thread")]
 async fn my_unit_test() {
-    let mut program_test = ProgramTest::new(
-        "my_program", // Your program's name
-        my_program::ID, // Your program's ID
-        None, // Or Some(processor)
-    );
+	let mut program_test = ProgramTest::new(
+		"my_program",   // Your program's name
+		my_program::ID, // Your program's ID
+		None,           // Or Some(processor)
+	);
 
-    let user_pubkey = Pubkey::new_unique();
-    program_test.add_account(
-        user_pubkey,
-        Account {
-            lamports: sol_to_lamports(1.0),
-            ..Account::default()
-        },
-    );
+	let user_pubkey = Pubkey::new_unique();
+	program_test.add_account(
+		user_pubkey,
+		Account {
+			lamports: sol_to_lamports(1.0),
+			..Account::default()
+		},
+	);
 
-    let ctx = program_test.start_with_context().await;
-    let rpc_provider = TestRpcProvider::new(ctx);
-    let rpc_client = rpc_provider.to_rpc_client();
+	let ctx = program_test.start_with_context().await;
+	let rpc_provider = TestRpcProvider::new(ctx);
+	let rpc_client = rpc_provider.to_rpc_client();
 
-    // Your test logic here...
-    // You can use the rpc_client to send transactions to your program
+	// Your test logic here...
+	// You can use the rpc_client to send transactions to your program
 }
 ```
-
