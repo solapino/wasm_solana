@@ -66,36 +66,37 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: test `memory_wallet` with `ssr`
-        run: cargo test_memory_wallet_ssr
+        run: ulimit -n 20000 && cargo test_memory_wallet_ssr
         shell: devenv shell -c -- bash -e {0}
 
       - name: test `memory_wallet` with `docs`
-        run: cargo test_memory_wallet_docs
+        run: ulimit -n 20000 && cargo test_memory_wallet_docs
         shell: devenv shell -c -- bash -e {0}
 
       - name: test `wasm_client_solana` with `ssr`
-        run: cargo test_wasm_client_solana_ssr
+        run: ulimit -n 20000 && cargo test_wasm_client_solana_ssr
         shell: devenv shell -c -- bash -e {0}
 
       - name: test `wasm_client_solana` with `docs`
-        run: cargo test_wasm_client_solana_docs
+        run: ulimit -n 20000 && cargo test_wasm_client_solana_docs
         shell: devenv shell -c -- bash -e {0}
       - name: test `test_utils_solana` with `ssr` and `test_validator`
 
-        run: cargo test_streams
+        run: ulimit -n 20000 && cargo test_streams
         shell: devenv shell -c -- bash -e {0}
 
       - name: test `example_client`
-        run: cargo test_example_client
+        run: ulimit -n 20000 && cargo test_example_client
         shell: devenv shell -c -- bash -e {0}
 
       - name: test `wasm` with background validator
         env:
           WASM_BINDGEN_TEST_TIMEOUT: 120
         run: |
+          ulimit -n 20000
           rustup target add wasm32-unknown-unknown
           test:validator
-          shell: devenv shell -c -- bash -e {0}
+        shell: devenv shell -c -- bash -e {0}
 
   # coverage:
   #   timeout-minutes: 60
