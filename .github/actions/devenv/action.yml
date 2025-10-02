@@ -58,4 +58,6 @@ runs:
         env
         echo "LIBCLANG_PATH=$LIBCLANG_PATH"
         ls -al $LIBCLANG_PATH
+        echo "DEVENV_PROFILE=$DEVENV_PROFILE"
+        ls -al $DEVENV_PROFILE/lib
       shell: devenv shell -c -- bash -e {0}
