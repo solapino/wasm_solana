@@ -15,25 +15,25 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  # lint:
-  #   timeout-minutes: 60
-  #   runs-on: blacksmith-2vcpu-ubuntu-2404
-  #   steps:
-  #     - name: checkout repository
-  #       uses: actions/checkout@v4
+  lint:
+    timeout-minutes: 60
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
 
-  #     - name: setup
-  #       uses: ./.github/actions/devenv
-  #       with:
-  #         github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: setup
+        uses: ./.github/actions/devenv
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-  #     - name: lint clippy
-  #       run: lint:clippy
-  #       shell: devenv shell -c -- bash -e {0}
+      - name: lint clippy
+        run: lint:clippy
+        shell: devenv shell -c -- bash -e {0}
 
-  #     - name: lint formatting
-  #       run: lint:format
-  #       shell: devenv shell -c -- bash -e {0}
+      - name: lint formatting
+        run: lint:format
+        shell: devenv shell -c -- bash -e {0}
 
   # docs:
   #   timeout-minutes: 60
@@ -53,97 +53,98 @@ jobs:
   #     - name: build docs
   #       run: build:docs
 
-  # test:
-  #   timeout-minutes: 60
-  #   runs-on: blacksmith-2vcpu-ubuntu-2404
-  #   steps:
-  #     - name: checkout repository
-  #       uses: actions/checkout@v4
+  test:
+    timeout-minutes: 60
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
 
-  #     - name: setup
-  #       uses: ./.github/actions/devenv
-  #       with:
-  #         github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: setup
+        uses: ./.github/actions/devenv
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-  #     - name: test `memory_wallet` with `ssr`
-  #       run: cargo test_memory_wallet_ssr
-  #       shell: devenv shell -c -- bash -e {0}
+      - name: test `memory_wallet` with `ssr`
+        run: cargo test_memory_wallet_ssr
+        shell: devenv shell -c -- bash -e {0}
 
-  #     - name: test `memory_wallet` with `docs`
-  #       run: cargo test_memory_wallet_docs
-  #       shell: devenv shell -c -- bash -e {0}
+      - name: test `memory_wallet` with `docs`
+        run: cargo test_memory_wallet_docs
+        shell: devenv shell -c -- bash -e {0}
 
-  #     - name: test `wasm_client_solana` with `ssr`
-  #       run: cargo test_wasm_client_solana_ssr
-  #       shell: devenv shell -c -- bash -e {0}
+      - name: test `wasm_client_solana` with `ssr`
+        run: cargo test_wasm_client_solana_ssr
+        shell: devenv shell -c -- bash -e {0}
 
-  #     - name: test `wasm_client_solana` with `docs`
-  #       run: cargo test_wasm_client_solana_docs
-  #       shell: devenv shell -c -- bash -e {0}
+      - name: test `wasm_client_solana` with `docs`
+        run: cargo test_wasm_client_solana_docs
+        shell: devenv shell -c -- bash -e {0}
 
-  #     - name: test `test_utils_solana` with `ssr` and `test_validator`
-  #       run: cargo test_streams
-  #       shell: devenv shell -c -- bash -e {0}
+      - name: test `test_utils_solana` with `ssr` and `test_validator`
+        run: cargo test_streams
+        shell: devenv shell -c -- bash -e {0}
 
-  #     - name: test `example_client`
-  #       run: cargo test_example_client
-  #       shell: devenv shell -c -- bash -e {0}
+      - name: test `example_client`
+        run: cargo test_example_client
+        shell: devenv shell -c -- bash -e {0}
 
-  #     - name: test `wasm` with background validator
-  #       env:
-  #         WASM_BINDGEN_TEST_TIMEOUT: 120
-  #       run: |
-  #         rustup target add wasm32-unknown-unknown
-  #         test:validator
-  #         shell: devenv shell -c -- bash -e {0}
+      - name: test `wasm` with background validator
+        env:
+          WASM_BINDGEN_TEST_TIMEOUT: 120
+        run: |
+          rustup target add wasm32-unknown-unknown
+          test:validator
+          shell: devenv shell -c -- bash -e {0}
 
-  # coverage:
-  #   timeout-minutes: 60
-  #   runs-on: blacksmith-2vcpu-ubuntu-2404
-  #   steps:
-  #     - name: checkout repository
-  #       uses: actions/checkout@v4
+  coverage:
+    timeout-minutes: 60
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
 
-  #     - name: setup
-  #       uses: ./.github/actions/devenv
-  #       with:
-  #         github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: setup
+        uses: ./.github/actions/devenv
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-  #     - name: coverage `memory_wallet_ssr`
-  #       run: cargo coverage_memory_wallet_ssr
-  #       shell: devenv shell -c -- bash -e {0}
+      - name: coverage `memory_wallet_ssr`
+        run: cargo coverage_memory_wallet_ssr
+        shell: devenv shell -c -- bash -e {0}
 
-  #     # - name: coverage `memory_wallet_docs`
-  #     #   run: cargo +nightly coverage_memory_wallet_docs
-  #     #   shell: devenv shell bash -- -e {0}
+      # - name: coverage `memory_wallet_docs`
+      #   run: cargo +nightly coverage_memory_wallet_docs
+      #   shell: devenv shell bash -- -e {0}
 
-  #     - name: coverage `wasm_client_solana_ssr`
-  #       run: cargo coverage_wasm_client_solana_ssr
-  #       shell: devenv shell -c -- bash -e {0}
+      - name: coverage `wasm_client_solana_ssr`
+        run: cargo coverage_wasm_client_solana_ssr
+        shell: devenv shell -c -- bash -e {0}
 
-  #     # - name: coverage `wasm_client_solana_docs`
-  #     #   run: cargo +nightly coverage_wasm_client_solana_docs
-  #     #   shell: devenv shell bash -- -e {0}
+      # - name: coverage `wasm_client_solana_docs`
+      #   run: cargo +nightly coverage_wasm_client_solana_docs
+      #   shell: devenv shell bash -- -e {0}
 
-  #     - name: coverage `streams`
-  #       run: cargo coverage_streams
-  #       shell: devenv shell -c -- bash -e {0}
+      - name: coverage `streams`
+        run: cargo coverage_streams
+        shell: devenv shell -c -- bash -e {0}
 
-  #     - name: coverage `example_client`
-  #       run: cargo coverage_example_client
-  #       shell: devenv shell -c -- bash -e {0}
+      - name: coverage `example_client`
+        run: cargo coverage_example_client
+        shell: devenv shell -c -- bash -e {0}
 
-  #     - name: coverage `codecov_report`
-  #       run: cargo coverage_codecov_report
-  #       shell: devenv shell -c -- bash -e {0}
+      - name: coverage `codecov_report`
+        run: cargo coverage_codecov_report
+        shell: devenv shell -c -- bash -e {0}
 
-  #     - name: upload coverage
-  #       if: ${{ github.actor != 'dependabot[bot]' }}
-  #       uses: codecov/codecov-action@v5
-  #       with:
-  #         files: codecov.json
-  #         fail_ci_if_error: false
-  #         token: ${{ secrets.CODECOV_TOKEN }}
+      - name: upload coverage
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        uses: codecov/codecov-action@v5
+        with:
+          files: codecov.json
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+
   build:
     timeout-minutes: 60
     runs-on: blacksmith-2vcpu-ubuntu-2404
