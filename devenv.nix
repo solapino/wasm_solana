@@ -77,7 +77,6 @@ in
 
   # disable dotenv since it breaks the variable interpolation supported by `direnv`
   dotenv.disableHint = true;
-  devcontainer.enable = true;
 
   tasks = {
     "rustfmt:nightly" = {
