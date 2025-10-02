@@ -21,7 +21,6 @@ in
       cmake
       dprint
       eget
-      gcc
       libiconv
       llvm.bintools
       llvm.clang
@@ -44,6 +43,7 @@ in
       coreutils
     ]
     ++ lib.optionals stdenv.isLinux [
+      libgcc.lib
       udev
     ];
 
@@ -54,11 +54,12 @@ in
     CC = "${llvm.clang}/bin/clang";
     CXX = "${llvm.clang}/bin/clang++";
     PROTOC = "${pkgs.protobuf}/bin/protoc";
-    LD_LIBRARY_PATH =
-      if pkgs.stdenv.isLinux then
-        "${pkgs.libgcc.lib}:${config.env.DEVENV_PROFILE}/lib"
-      else
-        "${config.env.DEVENV_PROFILE}/lib";
+    LD_LIBRARY_PATH = "${config.env.DEVENV_PROFILE}/lib";
+    # LD_LIBRARY_PATH =
+    #   if pkgs.stdenv.isLinux then
+    #     "${pkgs.libgcc.lib}:${config.env.DEVENV_PROFILE}/lib"
+    #   else
+    #     "${config.env.DEVENV_PROFILE}/lib";
   };
 
   # Rely on the global sdk for now as the nix apple sdk is not working for me.
