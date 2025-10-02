@@ -60,3 +60,71 @@ async fn run() -> TestValidatorRunner {
 [unlicense-link]: https://opensource.org/license/unlicense
 [codecov-image]: https://codecov.io/github/ifiokjr/wasm_solana/graph/badge.svg?token=87K799Q78I
 [codecov-link]: https://codecov.io/github/ifiokjr/wasm_solana
+
+## Guide
+
+When writing tests that use this library, you'll need to use the `#[tokio::test(flavor = "multi_thread")]` attribute on your test functions. This is because the test validator runs in a separate thread, and your test will need to communicate with it asynchronously.
+
+### Using `TestValidatorRunner` for Integration Tests
+
+For integration tests that require a realistic Solana runtime, you can use `TestValidatorRunner`.
+
+```rust
+use solana_sdk::pubkey;
+use test_utils_solana::TestValidatorRunner;
+use test_utils_solana::TestValidatorRunnerProps;
+
+#[tokio::test(flavor = "multi_thread")]
+async fn my_integration_test() {
+    let pubkey = pubkey!("99P8ZgtJYe1buSK8JXkvpLh8xPsCFuLYhz9hQFNw93WJ");
+    let props = TestValidatorRunnerProps::builder()
+        .pubkeys(vec![pubkey]) // Pubkeys to fund
+        .initial_lamports(1_000_000_000) // Lamports to fund each pubkey with
+        .namespace("my_test") // Namespace for the validator's RPC client
+        .build();
+
+    let validator = TestValidatorRunner::run(props).await;
+    let rpc_client = validator.rpc();
+
+    // Your test logic here...
+    // You can use the rpc_client to interact with the test validator
+}
+```
+
+### Using `ProgramTest` for Unit Tests
+
+For more lightweight unit tests, you can use `ProgramTest` from `solana-program-test`. This library provides helpers to make it easier to work with.
+
+```rust
+use solana_program_test::ProgramTest;
+use solana_sdk::account::Account;
+use solana_sdk::native_token::sol_to_lamports;
+use solana_sdk::pubkey::Pubkey;
+use test_utils_solana::TestRpcProvider;
+
+#[tokio::test(flavor = "multi_thread")]
+async fn my_unit_test() {
+    let mut program_test = ProgramTest::new(
+        "my_program", // Your program's name
+        my_program::ID, // Your program's ID
+        None, // Or Some(processor)
+    );
+
+    let user_pubkey = Pubkey::new_unique();
+    program_test.add_account(
+        user_pubkey,
+        Account {
+            lamports: sol_to_lamports(1.0),
+            ..Account::default()
+        },
+    );
+
+    let ctx = program_test.start_with_context().await;
+    let rpc_provider = TestRpcProvider::new(ctx);
+    let rpc_client = rpc_provider.to_rpc_client();
+
+    // Your test logic here...
+    // You can use the rpc_client to send transactions to your program
+}
+```
+
