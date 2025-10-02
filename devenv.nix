@@ -21,6 +21,7 @@ in
       cmake
       dprint
       eget
+      gcc
       libiconv
       llvm.bintools
       llvm.clang
