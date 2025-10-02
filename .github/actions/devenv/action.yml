@@ -16,9 +16,6 @@ runs:
       uses: Swatinem/rust-cache@v2
       with:
         prefix-key: "${{ inputs.cache-version }}"
-        shared-key: "main"
-        # cache-on-failure: ${{ github.event.name == 'push' && true || false  }}
-        # save-if: ${{ github.event.name == 'push' && 'true' || 'false'  }}
 
     - name: cache cargo binaries
       uses: actions/cache@v4
@@ -59,5 +56,4 @@ runs:
         ls -al $LIBCLANG_PATH
         echo "DEVENV_PROFILE=$DEVENV_PROFILE"
         ls -al $DEVENV_PROFILE/lib
-        echo "!! ULIMIT: $(ulimit -Hn) !!"
       shell: devenv shell -c -- bash -e {0}
