@@ -27,17 +27,13 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: install nightly rustfmt
-        run: rustup toolchain install nightly --component rustfmt
-        shell: devenv shell --clean="__IGNORE" bash -- -e {0}
-
       - name: lint clippy
-        run: lint:clippy
-        shell: devenv shell --clean="__IGNORE" bash -- -e {0}
+        run: devenv shell -c -- lint:clippy
+        shell: bash
 
       - name: lint formatting
-        run: lint:format
-        shell: devenv shell --clean="__IGNORE" bash -- -e {0}
+        run: devenv shell -c -- lint:format
+        shell: bash
 
   # docs:
   #   timeout-minutes: 60
@@ -70,36 +66,34 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: test `memory_wallet` with `ssr`
-        run: cargo test_memory_wallet_ssr
-        shell: devenv shell --clean="__IGNORE" bash -- -e {0}
+        run: devenv shell -c -- cargo test_memory_wallet_ssr
+        shell: bash
 
       - name: test `memory_wallet` with `docs`
-        run: cargo test_memory_wallet_docs
-        shell: devenv shell --clean="__IGNORE" bash -- -e {0}
+        run: devenv shell -c -- cargo test_memory_wallet_docs
+        shell: bash
 
       - name: test `wasm_client_solana` with `ssr`
-        run: cargo test_wasm_client_solana_ssr
-        shell: devenv shell --clean="__IGNORE" bash -- -e {0}
+        run: devenv shell -c -- cargo test_wasm_client_solana_ssr
+        shell: bash
 
       - name: test `wasm_client_solana` with `docs`
-        run: cargo test_wasm_client_solana_docs
-        shell: devenv shell --clean="__IGNORE" bash -- -e {0}
+        run: devenv shell -c -- cargo test_wasm_client_solana_docs
+        shell: bash
 
       - name: test `test_utils_solana` with `ssr` and `test_validator`
-        run: cargo test_streams
-        shell: devenv shell --clean="__IGNORE" bash -- -e {0}
+        run: devenv shell -c -- cargo test_streams
+        shell: bash
 
       - name: test `example_client`
-        run: cargo test_example_client
-        shell: devenv shell --clean="__IGNORE" bash -- -e {0}
+        run: devenv shell -c -- cargo test_example_client
+        shell: bash
 
       - name: test `wasm` with background validator
         env:
           WASM_BINDGEN_TEST_TIMEOUT: 120
-        run: |
-          rustup target add wasm32-unknown-unknown
-          test:validator
-        shell: devenv shell --clean="__IGNORE" bash -- -e {0}
+        run: devenv shell -c -- test:validator
+        shell: bash
 
   coverage:
     timeout-minutes: 60
@@ -114,32 +108,32 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: coverage `memory_wallet_ssr`
-        run: cargo coverage_memory_wallet_ssr
-        shell: devenv shell --clean="__IGNORE" bash -- -e {0}
+        run: devenv shell -c -- cargo coverage_memory_wallet_ssr
+        shell: bash
 
       # - name: coverage `memory_wallet_docs`
       #   run: cargo +nightly coverage_memory_wallet_docs
       #   shell: devenv shell bash -- -e {0}
 
       - name: coverage `wasm_client_solana_ssr`
-        run: cargo coverage_wasm_client_solana_ssr
-        shell: devenv shell --clean="__IGNORE" bash -- -e {0}
+        run: devenv shell -c -- cargo coverage_wasm_client_solana_ssr
+        shell: bash
 
       # - name: coverage `wasm_client_solana_docs`
       #   run: cargo +nightly coverage_wasm_client_solana_docs
       #   shell: devenv shell bash -- -e {0}
 
       - name: coverage `streams`
-        run: cargo coverage_streams
-        shell: devenv shell --clean="__IGNORE" bash -- -e {0}
+        run: devenv shell -c -- cargo coverage_streams
+        shell: bash
 
       - name: coverage `example_client`
-        run: cargo coverage_example_client
-        shell: devenv shell --clean="__IGNORE" bash -- -e {0}
+        run: devenv shell -c -- cargo coverage_example_client
+        shell: bash
 
       - name: coverage `codecov_report`
-        run: cargo coverage_codecov_report
-        shell: devenv shell --clean="__IGNORE" bash -- -e {0}
+        run: devenv shell -c -- cargo coverage_codecov_report
+        shell: bash
 
       - name: upload coverage
         if: ${{ github.actor != 'dependabot[bot]' }}
@@ -162,18 +156,18 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: build
-        run: cargo build --locked
-        shell: devenv shell --clean="__IGNORE" bash -- -e {0}
+        run: devenv shell -c -- cargo build --locked
+        shell: bash
 
       - name: build all features
-        run: build:all
-        shell: devenv shell --clean="__IGNORE" bash -- -e {0}
+        run: devenv shell -c -- build:all
+        shell: bash
 
       - name: build wasm
         env:
           RUSTFLAGS: '--cfg getrandom_backend="wasm_js"'
-        run: cargo build -p wasm_client_solana --target wasm32-unknown-unknown
-        shell: devenv shell --clean="__IGNORE" bash -- -e {0}
+        run: devenv shell -c -- RUSTFLAGS='--cfg getrandom_backend="wasm_js"' cargo build -p wasm_client_solana --target wasm32-unknown-unknown
+        shell: bash
 
   release:
     permissions:

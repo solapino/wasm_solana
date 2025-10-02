@@ -52,5 +52,5 @@ runs:
       shell: bash
 
     - name: install dependencies
-      run: install:cargo:bin
-      shell: devenv shell --clean="__IGNORE" bash -- -e {0}
+      run: devenv shell -c -- install:cargo:bin
+      shell: bash
