@@ -50,7 +50,7 @@ runs:
 
     - name: install dependencies
       run: install:cargo:bin
-      shell: devenv shell -vc -- bash -e {0}
+      shell: devenv shell -c -- bash -e {0}
 
     - name: debug
       run: |
@@ -59,4 +59,5 @@ runs:
         ls -al $LIBCLANG_PATH
         echo "DEVENV_PROFILE=$DEVENV_PROFILE"
         ls -al $DEVENV_PROFILE/lib
+        echo "!! ULIMIT: $(ulimit -Hn) !!"
       shell: devenv shell -c -- bash -e {0}
