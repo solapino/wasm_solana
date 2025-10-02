@@ -1,0 +1,35 @@
+name: simple
+description: "Setup development environment without nix"
+inputs:
+  cache-version:
+    description: The version of the cache to use.
+    required: false
+    default: "v1"
+
+runs:
+  using: composite
+  steps:
+    - name: setup rust
+      uses: dtolnay/rust-toolchain@stable
+
+    - name: cache rust dependencies
+      uses: Swatinem/rust-cache@v2
+      with:
+        prefix-key: "${{ inputs.cache-version }}"
+        key: ${{ runner.os }}-rust
+
+    - name: cache cargo binaries
+      uses: actions/cache@v4
+      with:
+        path: ./.bin
+        key: ${{ runner.os }}-cargo-bin-${{ inputs.cache-version }}-${{ env.RUSTUP_TOOLCHAIN }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-bin-${{ inputs.cache-version }}-
+
+    - name: cache eget
+      uses: actions/cache@v4
+      with:
+        path: ./.eget/bin
+        key: ${{ runner.os }}-eget-${{ inputs.cache-version }}-${{ hashFiles('.eget/.eget.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-eget-${{ inputs.cache-version }}-

@@ -5,7 +5,7 @@
   ...
 }:
 let
-  llvm = pkgs.llvmPackages_21;
+  llvm = pkgs.llvmPackages;
 in
 
 {
@@ -21,13 +21,13 @@ in
       eget
       gcc
       libiconv
-      llvm.bintools
+      # llvm.bintools
       # llvm.libclang.lib
-      llvm.clang
-      llvm.clang-tools
-      llvm.lld
-      llvm.llvm
-      llvm.mlir
+      # llvm.clang
+      # llvm.clang-tools
+      # llvm.lld
+      # llvm.llvm
+      # llvm.mlir
       nixfmt-rfc-style
       openssl
       perl
@@ -37,10 +37,6 @@ in
       rustup
       shfmt
       zstd
-
-      # for github actions
-      # nodejs_24
-      # git
     ]
     ++ lib.optionals stdenv.isDarwin [
       coreutils
@@ -52,9 +48,9 @@ in
   env = {
     EGET_CONFIG = "${config.env.DEVENV_ROOT}/.eget/.eget.toml";
     OPENSSL_NO_VENDOR = "1";
-    LIBCLANG_PATH = "${llvm.libclang.lib}/lib";
-    CC = "${llvm.clang}/bin/clang";
-    CXX = "${llvm.clang}/bin/clang++";
+    # LIBCLANG_PATH = "${llvm.libclang.lib}/lib";
+    # CC = "${llvm.clang}/bin/clang";
+    # CXX = "${llvm.clang}/bin/clang++";
   };
 
   # Rely on the global sdk for now as the nix apple sdk is not working for me.
@@ -68,7 +64,7 @@ in
   enterShell = ''
     set -e
     export PATH="$DEVENV_ROOT/.eget/bin:$PATH";
-    export LDFLAGS=$NIX_LDFLAGS;
+    export LDFLAGS="$NIX_LDFLAGS $LDFLAGS";
   '';
 
   # disable dotenv since it breaks the variable interpolation supported by `direnv`

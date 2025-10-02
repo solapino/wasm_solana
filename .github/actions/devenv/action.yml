@@ -1,6 +1,9 @@
 name: devenv
 description: "Setup development environment with devenv"
 inputs:
+  github-token:
+    description: Provide a github token
+    required: true
   cache-version:
     description: The version of the cache to use.
     required: false
@@ -9,10 +12,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: load devenv
-      run: devenv test -v
-      shell: bash
-
     - name: cache rust dependencies
       uses: Swatinem/rust-cache@v2
       with:
@@ -35,6 +34,27 @@ runs:
         restore-keys: |
           ${{ runner.os }}-eget-${{ inputs.cache-version }}-
 
+    - name: install nix
+      uses: cachix/install-nix-action@v31
+      with:
+        github_access_token: ${{ inputs.github-token }}
+
+    - name: Install LLVM and Clang
+      uses: KyleMayes/install-llvm-action@v2
+      with:
+        version: 19
+        env: true
+
+    - name: setup nix environment
+      run: |
+        # mkdir /etc/nix && echo "filter-syscalls = false" >> /etc/nix/nix.conf
+        # echo "access-tokens = github.com=${{ inputs.github-token }}" >> /etc/nix/nix.conf
+        # echo "extra-experimental-features = nix-command flakes"
+        nix profile add --accept-flake-config nixpkgs#cachix
+        cachix use devenv
+        nix profile add nixpkgs#devenv
+      shell: bash
+
     - name: install dependencies
-      run: install:all
+      run: install:cargo:bin
       shell: devenv shell bash -- -e {0}
