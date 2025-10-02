@@ -12,6 +12,11 @@ inputs:
 runs:
   using: composite
   steps:
+    # - name: free disk space (ubuntu)
+    #   uses: wimpysworld/nothing-but-nix@main
+    #   with:
+    #     hatchet-protocol: "rampage"
+    #     witness-carnage: true
     - name: cache rust dependencies
       uses: Swatinem/rust-cache@v2
       with:
@@ -39,17 +44,8 @@ runs:
       with:
         github_access_token: ${{ inputs.github-token }}
 
-    - name: Install LLVM and Clang
-      uses: KyleMayes/install-llvm-action@v2
-      with:
-        version: 19
-        env: true
-
     - name: setup nix environment
       run: |
-        # mkdir /etc/nix && echo "filter-syscalls = false" >> /etc/nix/nix.conf
-        # echo "access-tokens = github.com=${{ inputs.github-token }}" >> /etc/nix/nix.conf
-        # echo "extra-experimental-features = nix-command flakes"
         nix profile add --accept-flake-config nixpkgs#cachix
         cachix use devenv
         nix profile add nixpkgs#devenv
@@ -57,4 +53,4 @@ runs:
 
     - name: install dependencies
       run: install:cargo:bin
-      shell: devenv shell bash -- -e {0}
+      shell: devenv shell --clean="__IGNORE" bash -- -e {0}

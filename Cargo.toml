@@ -132,15 +132,13 @@ wasm_client_solana = { path = "crates/wasm_client_solana", version = "0.8.0" }
 # forks
 async-tungstenite = { default-features = false, version = "^0.28.1" }
 getrandom = { default-features = false, version = "^0.3" }
-solana-account-decoder-client-types-wasm = { path = "forks/solana-account-decoder-client-types-wasm", version = "2.3.10" }
-solana-account-decoder-wasm = { path = "forks/solana-account-decoder-wasm", version = "2.3.10" }
-solana-transaction-status-client-types-wasm = { path = "forks/solana-transaction-status-client-types-wasm", version = "2.3.10" }
-solana-transaction-status-wasm = { path = "forks/solana-transaction-status-wasm", version = "2.3.10" }
+solana-account-decoder-client-types-wasm = { path = "forks/solana-account-decoder-client-types-wasm", version = "2.3.12" }
+solana-account-decoder-wasm = { path = "forks/solana-account-decoder-wasm", version = "2.3.12" }
+solana-transaction-status-client-types-wasm = { path = "forks/solana-transaction-status-client-types-wasm", version = "2.3.12" }
+solana-transaction-status-wasm = { path = "forks/solana-transaction-status-wasm", version = "2.3.12" }
 
 [workspace.metadata.bin]
-cargo-insta = { version = "1.43.2" }
 cargo-llvm-cov = { version = "0.6.19" }
-cargo-nextest = { version = "0.9.104" }
 wait-for-them = { version = "0.5.1", bins = ["wait-for-them"] }
 wasm-bindgen-cli = { version = "0.2.104", bins = ["wasm-bindgen", "wasm-bindgen-test-runner"] }
 

@@ -5,7 +5,7 @@
   ...
 }:
 let
-  llvm = pkgs.llvmPackages;
+  llvm = pkgs.llvmPackages_19;
 in
 
 {
@@ -14,6 +14,8 @@ in
     [
       binaryen
       cargo-binstall # speed up cargo-rust-bin installs
+      cargo-insta
+      cargo-nextest
       cargo-run-bin
       chromedriver
       cmake
@@ -21,13 +23,13 @@ in
       eget
       gcc
       libiconv
-      # llvm.bintools
-      # llvm.libclang.lib
-      # llvm.clang
-      # llvm.clang-tools
-      # llvm.lld
-      # llvm.llvm
-      # llvm.mlir
+      llvm.bintools
+      llvm.clang
+      llvm.clang-tools
+      llvm.libclang.lib
+      llvm.lld
+      llvm.llvm
+      llvm.mlir
       nixfmt-rfc-style
       openssl
       perl
@@ -48,9 +50,10 @@ in
   env = {
     EGET_CONFIG = "${config.env.DEVENV_ROOT}/.eget/.eget.toml";
     OPENSSL_NO_VENDOR = "1";
-    # LIBCLANG_PATH = "${llvm.libclang.lib}/lib";
-    # CC = "${llvm.clang}/bin/clang";
-    # CXX = "${llvm.clang}/bin/clang++";
+    LIBCLANG_PATH = "${llvm.libclang.lib}/lib";
+    CC = "${llvm.clang}/bin/clang";
+    CXX = "${llvm.clang}/bin/clang++";
+    PROTOC = "${pkgs.protobuf}/bin/protoc";
   };
 
   # Rely on the global sdk for now as the nix apple sdk is not working for me.
@@ -64,7 +67,7 @@ in
   enterShell = ''
     set -e
     export PATH="$DEVENV_ROOT/.eget/bin:$PATH";
-    export LDFLAGS="$NIX_LDFLAGS $LDFLAGS";
+    export LDFLAGS="$NIX_LDFLAGS";
   '';
 
   # disable dotenv since it breaks the variable interpolation supported by `direnv`
@@ -81,6 +84,14 @@ in
   };
 
   scripts = {
+    "bash:ci" = {
+      exec = ''
+        set -e
+        bash -e {0}
+      '';
+      description = "A bash shell";
+      binary = "bash";
+    };
     anchor = {
       exec = ''
         set -e
@@ -246,7 +257,7 @@ in
     "fix:clippy" = {
       exec = ''
         set -e
-        cargo clippy --fix --allow-dirty --allow-staged --all-features
+        # cargo clippy --fix --allow-dirty --allow-staged --all-features
       '';
       description = "Fix clippy lints for rust.";
       binary = "bash";

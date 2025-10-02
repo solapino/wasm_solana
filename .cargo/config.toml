@@ -2,9 +2,7 @@
 runner = 'wasm-bindgen-test-runner'
 
 [alias]
-insta = ["bin", "cargo-insta"]
 llvm-cov = ["bin", "cargo-llvm-cov"]
-nextest = ["bin", "cargo-nextest"]
 
 test_wasm = [
 	"test",

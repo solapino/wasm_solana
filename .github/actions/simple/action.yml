@@ -33,3 +33,8 @@ runs:
         key: ${{ runner.os }}-eget-${{ inputs.cache-version }}-${{ hashFiles('.eget/.eget.toml') }}
         restore-keys: |
           ${{ runner.os }}-eget-${{ inputs.cache-version }}-
+
+    - name: install cargo binstall
+      uses: baptiste0928/cargo-install@v3
+      with:
+        crate: cargo-binstall
