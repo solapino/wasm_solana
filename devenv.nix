@@ -56,11 +56,7 @@ in
     CXX = "${llvm.clang}/bin/clang++";
     PROTOC = "${pkgs.protobuf}/bin/protoc";
     LD_LIBRARY_PATH = "${config.env.DEVENV_PROFILE}/lib";
-    # LD_LIBRARY_PATH =
-    #   if pkgs.stdenv.isLinux then
-    #     "${pkgs.libgcc.lib}:${config.env.DEVENV_PROFILE}/lib"
-    #   else
-    #     "${config.env.DEVENV_PROFILE}/lib";
+    WASM_BINDGEN_TEST_WEBDRIVER_JSON = "${config.env.DEVENV_ROOT}/webdriver.json";
   };
 
   # Rely on the global sdk for now as the nix apple sdk is not working for me.
@@ -211,18 +207,22 @@ in
         set -e
         validator:bg &
         pid=$!
+
         function cleanup {
           validator:kill
           kill -9 $pid
         }
+
         trap cleanup EXIT
         cargo bin wait-for-them -t 10000 127.0.0.1:8899
         sleep 5
+
         echo "running tests in chrome..."
         export RUSTFLAGS='--cfg getrandom_backend="wasm_js"' 
-        CHROMEDRIVER=$DEVENV_DOTFILE/profile/bin/chromedriver cargo test_wasm
+        CHROMEDRIVER=$DEVENV_PROFILE/bin/chromedriver cargo test_wasm
+
         # echo "running tests in firefox..."
-        # GECKODRIVER=$DEVENV_DOTFILE/profile/bin/geckodriver cargo test_wasm
+        # GECKODRIVER=$DEVENV_PROFILE/bin/geckodriver cargo test_wasm
       '';
       description = "Run tests with a validator in the background.";
       binary = "bash";
