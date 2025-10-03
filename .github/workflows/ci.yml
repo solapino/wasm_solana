@@ -65,7 +65,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: increase open file limit to unlimited
+      - name: increase open file limit
         run: |
           # WARNING: Setting the limit to 'unlimited' is not recommended.
           # It's safer to set a specific high number, e.g., --nofile=1000000:1000000
@@ -98,9 +98,8 @@ jobs:
         shell: devenv shell -c -- bash -e {0}
 
       - name: test `wasm` with background validator
-        env:
-          WASM_BINDGEN_TEST_TIMEOUT: 120
         run: |
+          export WASM_BINDGEN_TEST_TIMEOUT=120
           rustup target add wasm32-unknown-unknown
           test:validator
         shell: devenv shell -c -- bash -e {0}
