@@ -2,7 +2,7 @@
 
 <br />
 
-> A WebAssembly (WASM) compatible client for interacting with the Solana RPC and PubSub APIs. It allows for sending transactions, fetching account data, subscribing to account changes, and more, from within a WASM environment like a web browser or serverless functions.
+> A WebAssembly (WASM) compatible client for interacting with the Solana RPC and PubSub APIs. It allows for sending transactions, fetching account data, subscribing to account changes, and more, from within a WASM compaitible environment like the web and serverless functions.
 
 <br />
 
@@ -14,7 +14,7 @@ Add the following to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-wasm_client_solana = "0.1" # replace with the latest version
+wasm_client_solana = "0.9"
 ```
 
 Or use `cargo add`:

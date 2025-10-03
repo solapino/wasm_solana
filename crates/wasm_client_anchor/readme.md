@@ -20,7 +20,7 @@ Or directly add the following to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-wasm_client_anchor = "0.1" # replace with the latest version
+wasm_client_anchor = "0.8" # replace with the latest version
 ```
 
 ### Features

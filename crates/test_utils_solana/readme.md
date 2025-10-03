@@ -20,7 +20,7 @@ Or directly add the following to your `Cargo.toml`:
 
 ```toml
 [dev-dependencies]
-test_utils_solana = "0.1" # replace with the latest version
+test_utils_solana = "0.7" # replace with the latest version
 ```
 
 ### Features
