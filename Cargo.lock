@@ -3825,7 +3825,7 @@ dependencies = [
 
 [[package]]
 name = "memory_wallet"
-version = "0.1.23"
+version = "0.1.24"
 dependencies = [
  "anyhow",
  "assert2",
@@ -10852,7 +10852,7 @@ dependencies = [
 
 [[package]]
 name = "test_utils_anchor"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "anchor-lang",
  "async-trait",
@@ -10867,7 +10867,7 @@ dependencies = [
 
 [[package]]
 name = "test_utils_insta"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "anyhow",
  "assert2",
@@ -10876,14 +10876,14 @@ dependencies = [
 
 [[package]]
 name = "test_utils_keypairs"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "solana-sdk",
 ]
 
 [[package]]
 name = "test_utils_solana"
-version = "0.7.3"
+version = "0.7.4"
 dependencies = [
  "anyhow",
  "assert2",
@@ -11953,7 +11953,7 @@ dependencies = [
 
 [[package]]
 name = "wasm_client_anchor"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "anchor-lang",
  "anyhow",
@@ -11984,7 +11984,7 @@ dependencies = [
 
 [[package]]
 name = "wasm_client_solana"
-version = "0.8.0"
+version = "0.9.0"
 dependencies = [
  "anyhow",
  "assert2",
