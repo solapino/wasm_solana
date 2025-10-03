@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5](https://github.com/solapino/wasm_solana/compare/test_utils_insta@v0.1.4...test_utils_insta@v0.1.5) - 2025-10-03
+
+### <!-- 7 -->⚙️ Miscellaneous Tasks
+
+- reduce installation times
+
 ## [0.1.4](https://github.com/ifiokjr/wasm_solana/compare/test_utils_insta@v0.1.3...test_utils_insta@v0.1.4) - 2025-01-17
 
 ### <!-- 7 -->⚙️ Miscellaneous Tasks
