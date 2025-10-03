@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.6](https://github.com/solapino/wasm_solana/compare/test_utils_keypairs@v0.1.5...test_utils_keypairs@v0.1.6) - 2025-10-03
+
+### <!-- 7 -->⚙️ Miscellaneous Tasks
+
+- reduce installation times
+
 ## [0.1.5](https://github.com/ifiokjr/wasm_solana/compare/test_utils_keypairs@v0.1.4...test_utils_keypairs@v0.1.5) - 2025-03-14
 
 ### <!-- 7 -->⚙️ Miscellaneous Tasks

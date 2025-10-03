@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0](https://github.com/solapino/wasm_solana/compare/wasm_client_solana@v0.8.0...wasm_client_solana@v0.9.0) - 2025-10-03
+
+### <!-- 0 -->🎉 Added
+
+- remove shared testing runner (doesn't work in threaded envs)
+- build working with similar functionality
+- add forks and run `cargo build -p wasm_solana_client`
+
+### <!-- 3 -->📚 Documentation
+
+- updates readmes
+
+### <!-- 6 -->🧪 Testing
+
+- make it work for wasm
+
+### <!-- 7 -->⚙️ Miscellaneous Tasks
+
+- reduce installation times
+- update dependencies and improve token extension handling
+
+### <!-- 9 -->◀️ Revert
+
+- "fix: rollaback to solana-program `=2.1`"
+
 ## [0.8.0](https://github.com/ifiokjr/wasm_solana/compare/wasm_client_solana@v0.7.5...wasm_client_solana@v0.8.0) - 2025-03-14
 
 ### <!-- 0 -->🎉 Added
