@@ -50,17 +50,6 @@ async fn run() -> TestValidatorRunner {
 }
 ```
 
-[crate-image]: https://img.shields.io/crates/v/test_utils_solana.svg
-[crate-link]: https://crates.io/crates/test_utils_solana
-[docs-image]: https://docs.rs/test_utils_solana/badge.svg
-[docs-link]: https://docs.rs/test_utils_solana/
-[ci-status-image]: https://github.com/ifiokjr/wasm_solana/workflows/ci/badge.svg
-[ci-status-link]: https://github.com/ifiokjr/wasm_solana/actions?query=workflow:ci
-[unlicense-image]: https://img.shields.io/badge/license-Unlicence-blue.svg
-[unlicense-link]: https://opensource.org/license/unlicense
-[codecov-image]: https://codecov.io/github/ifiokjr/wasm_solana/graph/badge.svg?token=87K799Q78I
-[codecov-link]: https://codecov.io/github/ifiokjr/wasm_solana
-
 ## Guide
 
 When writing tests that use this library, you'll need to use the `#[tokio::test(flavor = "multi_thread")]` attribute on your test functions. This is because the test validator runs in a separate thread, and your test will need to communicate with it asynchronously.
@@ -127,3 +116,14 @@ async fn my_unit_test() {
 	// You can use the rpc_client to send transactions to your program
 }
 ```
+
+[crate-image]: https://img.shields.io/crates/v/test_utils_solana.svg
+[crate-link]: https://crates.io/crates/test_utils_solana
+[docs-image]: https://docs.rs/test_utils_solana/badge.svg
+[docs-link]: https://docs.rs/test_utils_solana/
+[ci-status-image]: https://github.com/ifiokjr/wasm_solana/workflows/ci/badge.svg
+[ci-status-link]: https://github.com/ifiokjr/wasm_solana/actions?query=workflow:ci
+[unlicense-image]: https://img.shields.io/badge/license-Unlicence-blue.svg
+[unlicense-link]: https://opensource.org/license/unlicense
+[codecov-image]: https://codecov.io/github/ifiokjr/wasm_solana/graph/badge.svg?token=87K799Q78I
+[codecov-link]: https://codecov.io/github/ifiokjr/wasm_solana

@@ -222,7 +222,8 @@ in
         cargo bin wait-for-them -t 10000 127.0.0.1:8899
         sleep 5
         echo "running tests in chrome..."
-        RUSTFLAGS='--cfg getrandom_backend="wasm_js"' CHROMEDRIVER=$DEVENV_DOTFILE/profile/bin/chromedriver cargo test_wasm
+        export RUSTFLAGS='--cfg getrandom_backend="wasm_js"' 
+        CHROMEDRIVER=$DEVENV_DOTFILE/profile/bin/chromedriver cargo test_wasm
         # echo "running tests in firefox..."
         # GECKODRIVER=$DEVENV_DOTFILE/profile/bin/geckodriver cargo test_wasm
       '';
