@@ -168,57 +168,23 @@ The path will not be easy. Hiring may be difficult, error messages may be crypti
   }
   ```
 
-See the individual crates for more information.
-
-See the individual crates for more information.
-
 ## Contributing
-
-### scripts
-
-- `anchor`: The `anchor` executable
-- `build:all`: Build all crates with all features activated.
-- `build:docs`: Build documentation site.
-- `coverage:all`: Run coverage across the crates
-- `fix:all`: Fix all autofixable problems.
-- `fix:clippy`: Fix clippy lints for rust.
-- `fix:es`: Fix lints for JS / TS.
-- `fix:format`: Format files with dprint.
-- `generate:keypair`: Generate a local solana keypair. Must provide a name.
-- `install:all`: Install all packages.
-- `install:cargo:bin`: Install cargo binaries locally.
-- `install:solana`: Install the version of solana or use one from the cache.
-- `lint:all`: Run all checks.
-- `lint:clippy`: Check that all rust lints are passing.
-- `lint:es`: Check lints for all JS / TS files.
-- `lint:format`: Check that all files are formatted.
-- `release-plz`: The `release-plz` executable
-- `setup:ci`: Setup devenv for GitHub Actions
-- `setup:docker`: Setup devenv shell for docker.
-- `setup:helix`: Setup for the helix editor.
-- `setup:vscode`: Setup the environment for vscode.
-- `test:all`: Run all tests across the crates
-- `update:deps`: Update dependencies.
 
 [`devenv`](https://devenv.sh/) is used to provide a reproducible development environment for this project. Follow the [getting started instructions](https://devenv.sh/getting-started/).
 
 To automatically load the environment you should [install direnv](https://devenv.sh/automatic-shell-activation/) and then load the `direnv`.
 
 ```bash
-# The security mechanism didn't allow to load the `.envrc`.
-# Since we trust it, let's allow it execution.
 direnv allow .
 ```
 
 At this point you should see the `nix` commands available in your terminal. Any changes made to the `.envrc` file will require you to run the above command again.
 
-Run the following commands to install all the required dependencies.
+Run the following command to install required rust binaries and solana tooling locally so you don't need to worry about polluting your global namespace or versioning.
 
 ```bash
 install:all
 ```
-
-This installs all the node dependencies, cargo binaries and solana tooling locally so you don't need to worry about polluting your global namespace.
 
 ### Upgrading `devenv`
 

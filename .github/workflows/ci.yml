@@ -210,7 +210,7 @@ jobs:
       issues: write
     timeout-minutes: 60
     if: github.event_name == 'push'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     needs: [test, lint, build]
     steps:
       - name: setup rust
