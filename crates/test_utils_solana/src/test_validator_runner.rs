@@ -23,10 +23,12 @@ use solana_sdk::native_token::sol_to_lamports;
 use solana_sdk::pubkey::Pubkey;
 use solana_sdk::signature::Keypair;
 use solana_sdk::signer::Signer;
-use solana_sdk::system_program;
+use solana_system_interface::program as system_program;
 use solana_test_validator::TestValidator;
 pub use solana_test_validator::TestValidatorGenesis;
 use solana_test_validator::UpgradeableProgramInfo;
+use tempfile::TempDir;
+use tempfile::tempdir;
 use typed_builder::TypedBuilder;
 use wasm_client_solana::SolanaRpcClient;
 
@@ -173,6 +175,8 @@ pub struct TestValidatorRunner {
 	mint_keypair: Arc<Keypair>,
 	/// The rpc client for the validator.
 	rpc: SolanaRpcClient,
+	/// This can be RAM intensive so use a tempdir when required.
+	ledger_path: Arc<TempDir>,
 }
 
 impl TestValidatorRunner {
@@ -192,6 +196,7 @@ impl TestValidatorRunner {
 		let faucet_keypair = Keypair::new();
 		let faucet_pubkey = faucet_keypair.pubkey();
 		let programs = programs.into_iter().map(Into::into).collect::<Vec<_>>();
+		let ledger_path = Arc::new(tempdir()?);
 
 		mark_port_used(ports.rpc);
 		mark_port_used(ports.pubsub);
@@ -222,6 +227,7 @@ impl TestValidatorRunner {
 			.rpc_port(ports.rpc)
 			.gossip_port(ports.gossip_range.0)
 			.port_range(ports.gossip_range)
+			.ledger_path(ledger_path.path())
 			.rpc_config(JsonRpcConfig {
 				faucet_addr: Some(faucet_addr),
 				enable_rpc_transaction_history: true,
@@ -259,6 +265,7 @@ impl TestValidatorRunner {
 			validator: Arc::new(validator),
 			mint_keypair: Arc::new(mint_keypair),
 			rpc,
+			ledger_path,
 		};
 
 		Ok(runner)
@@ -304,6 +311,10 @@ impl TestValidatorRunner {
 
 	pub fn mint_keypair(&self) -> &Keypair {
 		&self.mint_keypair
+	}
+
+	pub fn ledger_path(&self) -> PathBuf {
+		self.ledger_path.path().to_owned()
 	}
 }
 

@@ -31,16 +31,19 @@ serde = { workspace = true, features = ["derive"], default-features = true }
 serde_json = { workspace = true, default-features = true }
 solana-banks-client = { workspace = true, default-features = true }
 solana-banks-interface = { workspace = true, default-features = true }
+solana-commitment-config = { workspace = true, default-features = true }
 solana-faucet = { workspace = true, optional = true, default-features = true }
 solana-program = { workspace = true, default-features = true }
 solana-program-runtime = { workspace = true, default-features = true }
 solana-program-test = { workspace = true, default-features = true }
 solana-rpc = { workspace = true, default-features = true }
 solana-sdk = { workspace = true, default-features = true }
+solana-system-interface = { workspace = true, default-features = true }
 solana-test-validator = { workspace = true, optional = true, default-features = true }
 spl-associated-token-account = { workspace = true, default-features = true }
 spl-token-2022 = { workspace = true, default-features = true }
 tarpc = { workspace = true, default-features = true }
+tempfile = { workspace = true, default-features = true, optional = true }
 typed-builder = { workspace = true, default-features = true }
 wallet_standard = { workspace = true, features = ["solana"], default-features = true }
 wasm_client_solana = { workspace = true, features = ["ssr"] }
@@ -54,4 +57,4 @@ test_utils_keypairs = { workspace = true }
 tokio = { workspace = true, features = ["test-util", "time", "full"], default-features = true }
 
 [features]
-test_validator = ["dep:solana-faucet", "dep:solana-test-validator"]
+test_validator = ["dep:solana-faucet", "dep:solana-test-validator", "dep:tempfile"]
