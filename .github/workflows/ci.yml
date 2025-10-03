@@ -65,40 +65,54 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: increase open file limit
+      - name: test `memory_wallet` with `ssr`
         run: |
-          # WARNING: Setting the limit to 'unlimited' is not recommended.
-          # It's safer to set a specific high number, e.g., --nofile=1000000:1000000
           sudo prlimit --pid $$ --nofile=1000000:1000000
           echo "ULIMIT: $(ulimit -n)"
-        shell: bash
-
-      - name: test `memory_wallet` with `ssr`
-        run: cargo test_memory_wallet_ssr
+          export RUST_BACKTRACE=1
+          export LimitNOFILE=1000000
+          cargo test_memory_wallet_ssr
         shell: devenv shell -c -- bash -e {0}
 
       - name: test `memory_wallet` with `docs`
-        run: cargo test_memory_wallet_docs
+        run: |
+          sudo prlimit --pid $$ --nofile=1000000:1000000
+          export RUST_BACKTRACE=1
+          cargo test_memory_wallet_docs
         shell: devenv shell -c -- bash -e {0}
 
       - name: test `wasm_client_solana` with `ssr`
-        run: cargo test_wasm_client_solana_ssr
+        run: |
+          sudo prlimit --pid $$ --nofile=1000000:1000000
+          export RUST_BACKTRACE=1
+          cargo test_wasm_client_solana_ssr
         shell: devenv shell -c -- bash -e {0}
 
       - name: test `wasm_client_solana` with `docs`
-        run: cargo test_wasm_client_solana_docs
+        run: |
+          sudo prlimit --pid $$ --nofile=1000000:1000000
+          export RUST_BACKTRACE=1
+          cargo test_wasm_client_solana_docs
         shell: devenv shell -c -- bash -e {0}
       - name: test `test_utils_solana` with `ssr` and `test_validator`
 
-        run: cargo test_streams
+        run: |
+          sudo prlimit --pid $$ --nofile=1000000:1000000
+          export RUST_BACKTRACE=1
+          cargo test_streams
         shell: devenv shell -c -- bash -e {0}
 
       - name: test `example_client`
-        run: cargo test_example_client
+        run: |
+          sudo prlimit --pid $$ --nofile=1000000:1000000
+          export RUST_BACKTRACE=1
+          cargo test_example_client
         shell: devenv shell -c -- bash -e {0}
 
       - name: test `wasm` with background validator
         run: |
+          sudo prlimit --pid $$ --nofile=1000000:1000000
+          export RUST_BACKTRACE=1
           export WASM_BINDGEN_TEST_TIMEOUT=120
           rustup target add wasm32-unknown-unknown
           test:validator
