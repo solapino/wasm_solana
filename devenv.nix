@@ -18,6 +18,7 @@ in
       cargo-nextest
       cargo-run-bin
       chromedriver
+      curl # needed for `release-plz`
       cmake
       dprint
       eget
@@ -86,22 +87,6 @@ in
   };
 
   scripts = {
-    "bash:ci" = {
-      exec = ''
-        set -e
-        bash -e {0}
-      '';
-      description = "A bash shell";
-      binary = "bash";
-    };
-    anchor = {
-      exec = ''
-        set -e
-        cargo bin anchor $@
-      '';
-      description = "The `anchor` executable";
-      binary = "bash";
-    };
     "release-plz" = {
       exec = ''
         set -e
@@ -261,7 +246,7 @@ in
     "fix:clippy" = {
       exec = ''
         set -e
-        # cargo clippy --fix --allow-dirty --allow-staged --all-features
+        cargo clippy --fix --allow-dirty --allow-staged --all-features
       '';
       description = "Fix clippy lints for rust.";
       binary = "bash";
@@ -338,24 +323,6 @@ in
         cp -r $DEVENV_ROOT/setup/editors/helix .helix
       '';
       description = "Setup for the helix editor.";
-      binary = "bash";
-    };
-    "setup:nextest" = {
-      exec = ''
-        set -e
-        $DEVENV_ROOT/setup/scripts/nextest_setup.sh $@
-      '';
-      description = "Run the setup for nextest";
-      binary = "bash";
-    };
-    "build:docker" = {
-      exec = ''
-        set -e
-        export DOCKER_BUILDKIT=1
-        docker build --secret id=GITHUB_TOKEN -t wasm_solana_dev $DEVENV_ROOT
-        docker run --rm -it --entrypoint bash -v $DEVENV_ROOT:/app -w /app wasm_solana_dev
-      '';
-      description = "Run a docker image to simulate running a linux environment";
       binary = "bash";
     };
   };

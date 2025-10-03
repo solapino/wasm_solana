@@ -3,6 +3,7 @@ runner = 'wasm-bindgen-test-runner'
 
 [alias]
 llvm-cov = ["bin", "cargo-llvm-cov"]
+semver-checks = ["bin", "cargo-semver-checks"]
 
 test_wasm = [
 	"test",

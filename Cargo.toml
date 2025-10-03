@@ -140,7 +140,9 @@ solana-transaction-status-wasm = { path = "forks/solana-transaction-status-wasm"
 
 [workspace.metadata.bin]
 cargo-llvm-cov = { version = "0.6.19" }
+cargo-semver-checks = { version = "0.44.0" }
 wait-for-them = { version = "0.5.1", bins = ["wait-for-them"] }
+release-plz = { version = "0.3.147", bins = ["release-plz"] }
 wasm-bindgen-cli = { version = "0.2.104", bins = ["wasm-bindgen", "wasm-bindgen-test-runner"] }
 
 [profile.dev.package]
