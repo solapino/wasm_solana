@@ -29,9 +29,9 @@ runs:
       uses: actions/cache@v4
       with:
         path: ./.eget/bin
-        key: ${{ runner.os }}-eget-${{ inputs.cache-version }}-${{ hashFiles('.eget/.eget.toml') }}
+        key: ${{ runner.os }}-eget-${{ inputs.cache-version }}-${{ env.GITHUB_JOB }}-${{ hashFiles('.eget/.eget.toml') }}
         restore-keys: |
-          ${{ runner.os }}-eget-${{ inputs.cache-version }}-
+          ${{ runner.os }}-eget-${{ inputs.cache-version }}-${{ env.GITHUB_JOB }}-
 
     - name: install nix
       uses: cachix/install-nix-action@v31
@@ -47,13 +47,4 @@ runs:
 
     - name: install dependencies
       run: install:cargo:bin
-      shell: devenv shell -c -- bash -e {0}
-
-    - name: debug
-      run: |
-        env
-        echo "LIBCLANG_PATH=$LIBCLANG_PATH"
-        ls -al $LIBCLANG_PATH
-        echo "DEVENV_PROFILE=$DEVENV_PROFILE"
-        ls -al $DEVENV_PROFILE/lib
-      shell: devenv shell -c -- bash -e {0}
+      shell: devenv shell -- bash -e {0}

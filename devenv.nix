@@ -201,7 +201,7 @@ in
         # echo -e "\033[0;31mWARNING: 'cargo test_streams' is currently disabled. Remember to re-enable it when the bug is resolved!\033[0m"
         cargo test_streams
         cargo test_example_client
-        test:validator
+        WASM_BINDGEN_TEST_TIMEOUT=90 test:validator
       '';
       description = "Run all tests across the crates";
       binary = "bash";
@@ -216,9 +216,6 @@ in
           kill -9 $pid
         }
         trap cleanup EXIT
-
-        export WASM_BINDGEN_TEST_TIMEOUT=90
-
         cargo bin wait-for-them -t 10000 127.0.0.1:8899
         sleep 5
         echo "running tests in chrome..."
