@@ -189,7 +189,7 @@ install:all
 ### Upgrading `devenv`
 
 ```bash
-nix profile upgrade nixpkgs#devenv
+nix profile upgrade devenv
 ```
 
 ### Editor Setup
@@ -200,26 +200,9 @@ To setup recommended configuration for your favorite editor run the following co
 setup:vscode # Setup vscode
 ```
 
-### Docker Development Environment
-
-If you are using Docker, you can run the `devenv` shell with your current project directory mounted as a volume. This ensures that `devenv.nix` and other project files are accessible within the container.
-
 ```bash
-docker run --rm -it --entrypoint bash -v "$(pwd)":/app -w /app ghcr.io/cachix/devenv/devenv:latest
+setup:helix
 ```
-
-To use this Dockerfile:
-
-1. **Build the Docker image** from your project's root directory:
-   ```bash
-   docker build -t wasm_solana_dev .
-   ```
-   (You can replace `my-devenv-project` with any name you prefer for your image.)
-
-2. **Run the Docker container**:
-   ```bash
-   docker run --rm -it --entrypoint bash -v "$(pwd)":/app -w /app wasm_solana_dev
-   ```
 
 ## License
 
